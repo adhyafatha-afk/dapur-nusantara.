@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dapur Nusantara</title>
+<meta name="description" content="Kumpulan resep makanan tradisional Indonesia dari Sumatera sampai Papua, lengkap dengan bahan, cara membuat, dan dashboard.">
+<meta name="keywords" content="resep indonesia, makanan tradisional, dessert indonesia, rendang, nasi goreng, gudeg, pempek">
+<meta property="og:title" content="Dapur Nusantara">
+<meta property="og:description" content="Resep makanan tradisional Indonesia dari seluruh nusantara.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index, follow">
+<style>
+:root{--bg:#faf7f2;--card:#ffffff;--text:#2b2118;--muted:#7a6a5a;--accent:#c2410c;--soft:#fde8dc;--line:#e8dfd3}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1c1713;--card:#271f19;--text:#f3ebe1;--muted:#a89887;--accent:#fb923c;--soft:#3a2a1e;--line:#3a2f26}}
+:root[data-theme="dark"]{--bg:#1c1713;--card:#271f19;--text:#f3ebe1;--muted:#a89887;--accent:#fb923c;--soft:#3a2a1e;--line:#3a2f26}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+header{position:relative;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;padding:14px 20px;background:var(--card);border-bottom:1px solid var(--line)}
+.credit{font-size:20px;font-weight:700;color:var(--accent)}
+h1{margin:0;font-size:20px;color:var(--accent)}
+nav{display:flex;gap:8px}
+nav button,.chip{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--text);padding:6px 14px;border-radius:999px}
+nav button.on,.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+main{max-width:960px;margin:0 auto;padding:20px}
+.hidden{display:none!important}
+#form input,#form select,#form textarea{width:100%;font:inherit;padding:8px 12px;margin:0 0 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text)}
+#form h2{margin:0 0 12px}
+.muted{color:var(--muted);font-size:14px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+input[type=search]{flex:1;min-width:200px;font:inherit;padding:9px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card h3{margin:6px 0 4px;font-size:16px}
+.tag{display:inline-block;font-size:12px;background:var(--soft);color:var(--accent);padding:2px 10px;border-radius:999px}
+#detail{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:20px}
+#detail h2{margin:6px 0 4px;color:var(--accent)}
+#detail h3{margin:18px 0 6px;font-size:16px}
+#detail ul,#detail ol{margin:0;padding-left:20px}
+#detail li{margin-bottom:6px}
+.close{float:right;font:inherit;cursor:pointer;border:none;background:none;color:var(--muted);font-size:20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.big{font-size:22px;font-weight:700;color:var(--accent);margin-top:4px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:20px}
+.panel h2{margin:0 0 12px;font-size:16px}
+.bar-row{display:grid;grid-template-columns:90px 1fr 30px;gap:10px;align-items:center;margin-bottom:8px;font-size:14px}
+.bar-track{background:var(--soft);border-radius:6px;height:12px;overflow:hidden}
+.bar{background:var(--accent);height:100%;border-radius:6px}
+.pill{display:inline-block;margin:4px 6px 0 0;padding:4px 12px;border-radius:999px;background:var(--soft);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+.foot{text-align:center;padding:24px 20px;margin-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.foot a{color:var(--accent);text-decoration:none}
+.chrome-dot{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;background:conic-gradient(#EA4335 0 33%,#FBBC05 0 66%,#34A853 0 100%);box-shadow:inset 0 0 0 4px #4285F4}
+@media (max-width:560px){.bar-row{grid-template-columns:76px 1fr 24px}}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.row select{font:inherit;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.row input[type=color]{width:56px;height:36px;border:none;background:none;padding:0;cursor:pointer}
+#ai-in{width:100%;font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);margin-bottom:10px}
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.checklist label{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+.checklist input{width:16px;height:16px;accent-color:var(--accent)}
+.checklist .done{text-decoration:line-through;color:var(--muted)}
+#ai-recipe{width:100%;font:inherit;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);margin-bottom:10px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0 4px}
+.meta div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.meta b{font-size:15px}
+.fl{display:block;margin-bottom:2px}
+.fl span{display:block;font-size:13px;color:var(--muted);margin-bottom:3px}
+</style>
+</head>
+<body>
+<header>
+  <div class="credit">Made for Adhyafatha Family</div>
+  <h1>Dapur Nusantara</h1>
+  <nav>
+    <button data-t="resep" class="on" onclick="tab('resep')" data-i18n="nav_resep">Resep</button>
+    <button data-t="dash" onclick="tab('dash')" data-i18n="nav_dash">Dashboard</button>
+    <button data-t="ai" onclick="tab('ai')" data-i18n="nav_ai">Asisten</button>
+    <button data-t="belajar" onclick="tab('belajar')" data-i18n="nav_belajar">Belajar</button>
+    <button data-t="set" onclick="tab('set')" data-i18n="nav_set">Pengaturan</button>
+  </nav>
+</header>
+
+<main>
+  <section id="v-resep">
+    <div id="detail" class="hidden"></div>
+    <div class="toolbar">
+      <input type="search" id="q" data-i18n-ph="search" placeholder="Cari resep..." aria-label="Cari resep" oninput="q=this.value.trim().toLowerCase();renderList()">
+      <button class="chip" onclick="toggleForm()" data-i18n="add">+ Tambah Resep</button>
+      <div id="chips"></div>
+    </div>
+    <div id="form" class="panel hidden">
+      <h2 data-i18n="form_title">Tambah resep baru</h2>
+      <label class="fl"><span data-i18n="l_nama"></span><input id="f-nama" data-i18n-ph="f_nama" placeholder="Nama makanan"></label>
+      <label class="fl"><span data-i18n="l_daerah"></span><input id="f-daerah" data-i18n-ph="f_daerah" placeholder="Daerah, misal Jawa Barat"></label>
+      <label class="fl"><span data-i18n="l_kat"></span><input id="f-kat" data-i18n-ph="f_kat" placeholder="Kategori, misal Lauk"></label>
+      <label class="fl"><span data-i18n="l_waktu"></span><input id="f-waktu" type="number" min="0" data-i18n-ph="f_waktu" placeholder="Waktu (menit)"></label>
+      <label class="fl"><span data-i18n="l_porsi"></span><input id="f-porsi" type="number" min="1" data-i18n-ph="f_porsi" placeholder="Porsi"></label>
+      <label class="fl"><span data-i18n="l_tingkat"></span><select id="f-tingkat"><option value="Mudah">Mudah</option><option value="Sedang" selected>Sedang</option><option value="Sulit">Sulit</option></select></label>
+      <label class="fl"><span data-i18n="l_bahan"></span><textarea id="f-bahan" rows="5" data-i18n-ph="f_bahan" placeholder="Satu bahan per baris"></textarea></label>
+      <label class="fl"><span data-i18n="l_langkah"></span><textarea id="f-langkah" rows="5" data-i18n-ph="f_langkah" placeholder="Satu langkah per baris"></textarea></label>
+      <button class="chip on" onclick="simpanResep()" data-i18n="simpan">Simpan</button>
+      <p id="f-msg" class="muted"></p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="v-dash" class="hidden">
+    <div class="stats" id="stats"></div>
+    <div class="panel"><h2 data-i18n="d_kat">Resep per kategori</h2><div id="bars"></div></div>
+    <div class="panel"><h2 data-i18n="d_tingkat">Tingkat kesulitan</h2><div id="tingkat"></div></div>
+    <div class="panel">
+      <h2 data-i18n="d_check">Checklist masakan</h2>
+      <p class="muted" id="prog"></p>
+      <div class="bar-track"><div class="bar" id="progbar" style="width:0%"></div></div>
+      <div class="checklist" id="checklist" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <section id="v-ai" class="hidden">
+    <div class="panel">
+      <h2 data-i18n="ai_title">Asisten Resep</h2>
+      <p class="muted" data-i18n="ai_desc">Tulis bahan yang kamu punya, lalu lihat resep yang bisa dibuat.</p>
+      <div class="toolbar" style="margin-bottom:10px"><button class="chip" onclick="tambahBahan('telur')">telur</button><button class="chip" onclick="tambahBahan('tempe')">tempe</button><button class="chip" onclick="tambahBahan('tahu')">tahu</button><button class="chip" onclick="tambahBahan('ayam')">ayam</button><button class="chip" onclick="tambahBahan('ikan')">ikan</button><button class="chip" onclick="tambahBahan('sapi')">sapi</button><button class="chip" onclick="tambahBahan('kentang')">kentang</button><button class="chip" onclick="tambahBahan('nasi')">nasi</button><button class="chip" onclick="tambahBahan('cabai')">cabai</button><button class="chip" onclick="tambahBahan('bawang merah')">bawang merah</button><button class="chip" onclick="tambahBahan('santan')">santan</button><button class="chip" onclick="tambahBahan('kecap')">kecap</button><button class="chip" onclick="tambahBahan('jeruk')">jeruk</button><button class="chip" onclick="tambahBahan('pisang')">pisang</button></div>
+      <textarea id="ai-in" rows="3" data-i18n-ph="ai_ph" placeholder="Contoh: telur, tempe, cabai, bawang merah"></textarea>
+      <button class="chip on" onclick="cariResep()" data-i18n="ai_btn">Cari resep</button>
+      <div id="ai-out" style="margin-top:14px"></div>
+
+    </div>
+  </section>
+
+  <section id="v-belajar" class="hidden">
+    <div class="panel">
+      <h2 data-i18n="ai_belajar">Belajar & Latihan</h2>
+      <p class="muted" data-i18n="ai_belajar_desc">Pilih resep, lalu pilih mode.</p>
+      <select id="ai-recipe"><option value="">Pilih resep...</option></select>
+      <div class="toolbar">
+        <button class="chip on" onclick="mulaiBelajar()">/learn</button>
+        <button class="chip" onclick="mulaiDeep()">/deepdive</button>
+      </div>
+      <p class="muted" data-i18n="ai_mode">/learn: lihat langkah satu per satu. /deepdive: ringkasan dan takaran untuk porsi lain.</p>
+      <div id="ai-out2" style="margin-top:14px"></div>
+    </div>
+  </section>
+
+  <section id="v-set" class="hidden">
+    <div class="panel">
+      <h2 data-i18n="set_title">Pengaturan</h2>
+      <div class="row"><span data-i18n="set_lang">Bahasa</span>
+        <select id="s-lang" onchange="setLang(this.value)"><option value="id">Indonesia</option><option value="en">English</option></select>
+      </div>
+      <div class="row"><span data-i18n="set_tema">Tema</span>
+        <select id="s-tema" onchange="setTema(this.value)">
+          <option value="auto" data-i18n="t_auto">Ikuti sistem</option>
+          <option value="light" data-i18n="t_light">Terang</option>
+          <option value="dark" data-i18n="t_dark">Gelap</option>
+          <option value="forest" data-i18n="t_forest">Hijau</option>
+          <option value="ocean" data-i18n="t_ocean">Biru</option>
+          <option value="custom" data-i18n="t_custom">Kustom</option>
+        </select>
+      </div>
+      <div class="row"><span data-i18n="set_bg">Warna latar</span><input type="color" id="c-bg" oninput="setColor('bg',this.value)"></div>
+      <div class="row"><span data-i18n="set_card">Warna kartu</span><input type="color" id="c-card" oninput="setColor('card',this.value)"></div>
+      <div class="row"><span data-i18n="set_text">Warna teks</span><input type="color" id="c-text" oninput="setColor('text',this.value)"></div>
+      <div class="row"><span data-i18n="set_accent">Warna aksen</span><input type="color" id="c-accent" oninput="setColor('accent',this.value)"></div>
+      <button class="chip" onclick="resetSet()" data-i18n="reset">Atur ulang</button>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span data-i18n="dibuka">Dibuka dengan</span> <span class="chrome-dot"></span> Google Chrome &middot; <span data-i18n="cari_di">Cari resep lainnya di</span>
+  <a href="https://www.google.com/search?q=resep+makanan+tradisional+indonesia" target="_blank" rel="noopener"><b><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></b></a>
+</footer>
+<script>
+const R = [
+  {id:'nasgor',nama:'Nasi Goreng Kampung',daerah:'Nasional',kategori:'Nasi',waktu:20,porsi:2,tingkat:'Mudah',
+   bahan:['2 piring nasi putih dingin','4 siung bawang merah, iris','2 siung bawang putih, cincang','5 buah cabai rawit','2 sdm kecap manis','2 butir telur','1 sdm minyak goreng','Garam dan merica secukupnya'],
+   langkah:['Panaskan minyak, tumis bawang merah, bawang putih, dan cabai hingga harum.','Masukkan nasi, aduk rata dengan api besar.','Tambahkan kecap manis, garam, dan merica. Aduk sekitar 2 menit.','Di sisi wajan, goreng telur hingga matang, lalu sajikan di atas nasi.']},
+  {id:'tempe',nama:'Tempe Orek',daerah:'Pulau Jawa',kategori:'Lauk',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['2 papan tempe, potong dadu kecil','3 siung bawang merah, iris','2 siung bawang putih, cincang','3 lembar daun salam','2 cm lengkuas, geprek','3 sdm kecap manis','1 sdt gula merah, sisir','Air secukupnya','Minyak goreng untuk menggoreng'],
+   langkah:['Goreng tempe hingga kecokelatan, angkat dan tiriskan.','Tumis bawang merah, bawang putih, daun salam, dan lengkuas.','Masukkan air, kecap, dan gula merah. Didihkan.','Masukkan tempe, masak hingga air menyusut dan bumbu meresap.']},
+  {id:'telur',nama:'Telur Balado',daerah:'Sumatera Barat',kategori:'Lauk',waktu:25,porsi:3,tingkat:'Sedang',
+   bahan:['4 butir telur rebus, kupas, belah dua','6 buah cabai merah','4 buah cabai rawit','4 siung bawang merah','2 siung bawang putih','1 buah tomat kecil','1 sdm saus tomat','1 sdt gula','Garam dan minyak goreng'],
+   langkah:['Haluskan cabai, bawang merah, bawang putih, dan tomat.','Tumis bumbu halus hingga matang dan harum.','Tambahkan saus tomat, gula, dan garam. Masak sampai mengental.','Masukkan telur, balur dengan sambal hingga rata.']},
+  {id:'sayur',nama:'Sayur Asem',daerah:'Jawa Barat',kategori:'Sayur',waktu:35,porsi:4,tingkat:'Sedang',
+   bahan:['1 ikat kacang panjang, potong 3 cm','1 buah labu siam, potong dadu','1 genggam jagung manis (opsional)','2 siung bawang merah','2 siung bawang putih','3 buah cabai merah','2 lembar daun salam','Asam jawa secukupnya','1 liter air','Garam dan gula secukupnya'],
+   langkah:['Rendam asam jawa dengan air hangat, lalu ambil airnya.','Haluskan bawang merah, bawang putih, dan cabai.','Didihkan 1 liter air dengan bumbu halus dan daun salam.','Masukkan labu siam dan jagung, masak 5 menit. Lalu masukkan kacang panjang, air asam, garam, dan gula.']},
+  {id:'ayam',nama:'Ayam Kecap',daerah:'Nasional',kategori:'Lauk',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['1 kg ayam, potong sesuai selera','5 sdm kecap manis','3 siung bawang putih','4 siung bawang merah','2 cm jahe, geprek','2 lembar daun jeruk','3 sdm air','Minyak goreng, garam, dan merica'],
+   langkah:['Lumuri ayam dengan garam dan merica, diamkan 15 menit.','Goreng ayam sebentar hingga setengah matang, lalu tiriskan.','Tumis bawang, jahe, dan daun jeruk. Masukkan ayam.','Tambahkan kecap manis dan air. Masak dengan api kecil hingga bumbu meresap.']},
+  {id:'perkedel',nama:'Perkedel Kentang',daerah:'Pulau Jawa',kategori:'Camilan',waktu:40,porsi:6,tingkat:'Mudah',
+   bahan:['4 buah kentang, rebus dan haluskan','100 g daging giling (opsional)','1 butir telur','2 siung bawang putih, cincang halus','1 batang daun bawang, iris','Garam, merica, dan pala secukupnya','Tepung roti untuk melapisi','Minyak goreng'],
+   langkah:['Campur kentang tumbuk dengan daging, telur, bumbu, dan daun bawang.','Bentuk bulat pipih.','Gulingkan di atas tepung roti.','Goreng dengan api sedang hingga kecokelatan.']},
+  {id:'jeruk',nama:'Es Jeruk Peras',daerah:'Nasional',kategori:'Minuman',waktu:10,porsi:2,tingkat:'Mudah',
+   bahan:['4 buah jeruk peras','3 sdm gula pasir (sesuai selera)','300 ml air matang dingin','Es batu secukupnya'],
+   langkah:['Peras jeruk, saring jika ingin tanpa ampas.','Campur air jeruk, gula, dan air dingin. Aduk sampai larut.','Tuang ke gelas berisi es batu lalu sajikan.']},
+  {id:'rendang',nama:'Rendang Sapi',daerah:'Sumatera Barat',kategori:'Lauk',waktu:180,porsi:6,tingkat:'Sulit',
+   bahan:['1 kg daging sapi, potong kotak','1 butir kelapa, ambil santan kental dan encer','10 buah cabai merah','8 siung bawang merah','6 siung bawang putih','5 cm lengkuas, 3 lembar daun jeruk, 2 batang serai','1 sdt ketumbar bubuk, 1 sdt jintan','Garam dan gula secukupnya'],
+   langkah:['Haluskan bumbu lalu tumis hingga harum.','Masukkan daging dan santan encer. Masak hingga daging empuk.','Tambahkan santan kental, aduk terus dengan api kecil sampai kering dan berwarna cokelat.']},
+  {id:'gudeg',nama:'Gudeg Jogja',daerah:'DI Yogyakarta',kategori:'Sayur',waktu:120,porsi:4,tingkat:'Sedang',
+   bahan:['1 buah nangka muda, potong','4 siung bawang merah, 3 siung bawang putih','4 butir telur, rebus','500 ml santan','3 lembar daun salam, 2 cm lengkuas','2 sdm gula merah','Garam secukupnya'],
+   langkah:['Tumis bawang halus dengan daun salam dan lengkuas.','Masukkan nangka, gula merah, santan, dan garam.','Masak dengan api kecil sekitar 90 menit hingga nangka empuk dan berwarna cokelat. Sajikan dengan telur.']},
+  {id:'papeda',nama:'Papeda Kuah Kuning',daerah:'Maluku dan Papua',kategori:'Nasi',waktu:30,porsi:2,tingkat:'Sedang',
+   bahan:['200 g sagu basah','500 ml air','1 ekor ikan kakap, potong','2 cm kunyit, geprek','2 lembar daun salam','1 buah jeruk nipis','Garam secukupnya'],
+   langkah:['Rebus ikan dengan air, kunyit, daun salam, dan garam menjadi kuah kuning.','Campur sagu dengan sedikit air dingin, lalu tuang ke air mendidih sambil diaduk hingga kental dan bening.','Sajikan papeda dengan kuah ikan dan perasan jeruk nipis.']},
+  {id:'coto',nama:'Coto Makassar',daerah:'Sulawesi Selatan',kategori:'Sup',waktu:90,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging sapi dan jeroan, potong','2 liter air','5 siung bawang merah, 4 siung bawang putih','3 cm jahe, 3 cm lengkuas, 2 batang serai','1 sdm kacang tanah sangrai, haluskan','1 sdt merica, 3 lembar daun salam','Garam dan ketupat untuk pelengkap'],
+   langkah:['Rebus daging dan jeroan hingga empuk, buang air rebusan pertama.','Haluskan bumbu, tumis, lalu masukkan ke kuah bersama daun salam dan serai.','Tambahkan kacang tanah halus, masak 30 menit, lalu sajikan dengan ketupat.']},
+  {id:'pempek',nama:'Pempek Lenjer',daerah:'Sumatera Selatan',kategori:'Camilan',waktu:60,porsi:6,tingkat:'Sulit',
+   bahan:['250 g ikan tenggiri, giling halus','100 g tepung tapioka','1 butir telur','Garam dan es batu secukupnya','Cuka, gula merah, dan cabai untuk cuko'],
+   langkah:['Uleni ikan, telur, garam, dan es batu, lalu tambahkan tapioka hingga kalis.','Bentuk adonan lonjong, rebus hingga mengapung.','Goreng hingga kecokelatan, lalu sajikan dengan cuko.']},
+  {id:'satelilit',nama:'Sate Lilit',daerah:'Bali',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ikan atau ayam, cincang halus','1 butir kelapa parut sangrai','5 siung bawang merah, 3 siung bawang putih','3 buah cabai merah, 2 cm kencur','1 batang serai, 2 lembar daun jeruk','Minyak, garam, dan gula secukupnya'],
+   langkah:['Haluskan bumbu, lalu campur dengan kelapa parut dan daging cincang.','Lilitkan adonan di batang serai.','Panggang sambil diolesi minyak hingga matang.']},
+  {id:'klepon',nama:'Klepon',daerah:'Jawa Timur',kategori:'Kue',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['150 g tepung ketan','100 ml air daun pandan','50 g gula merah, sisir','50 g kelapa parut, kukus dengan sedikit garam','Pewarna hijau pandan (opsional)'],
+   langkah:['Campur tepung ketan dengan air pandan hingga menjadi adonan kalis.','Isi adonan dengan gula merah lalu bulatkan.','Rebus hingga mengapung, lalu gulingkan di kelapa parut.']},
+  {id:'gadogado',nama:'Gado-gado',daerah:'DKI Jakarta',kategori:'Sayur',waktu:30,porsi:2,tingkat:'Mudah',
+   bahan:['1 buah kentang, 1 potong tahu, 1 potong tempe','100 g kacang panjang dan tauge','2 butir telur rebus','100 g kacang tanah sangrai','2 sdm gula merah, asam jawa, garam, dan cabai rawit'],
+   langkah:['Rebus sayur dan kentang, goreng tahu dan tempe.','Haluskan kacang tanah dengan gula, asam, garam, dan cabai untuk bumbu.','Tata sayur dan lauk di piring, lalu siram bumbu kacang.']},
+  {id:'mieaceh',nama:'Mie Aceh',daerah:'Aceh',kategori:'Mie',waktu:40,porsi:2,tingkat:'Sedang',
+   bahan:['200 g mie kuning basah','1 butir telur','50 g daging sapi, iris','2 siung bawang merah, 2 siung bawang putih','2 buah cabai merah, 1 sdt kari bubuk','1 buah tomat, 1 batang daun bawang','200 ml kaldu sapi, garam, dan minyak'],
+   langkah:['Tumis bumbu halus, lalu masukkan daging dan kari bubuk.','Tambahkan kaldu, tomat, dan telur, masak hingga mengental.','Masukkan mie, aduk rata, dan taburi daun bawang.']},
+  {id:'banjar',nama:'Soto Banjar',daerah:'Kalimantan Selatan',kategori:'Sup',waktu:75,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ayam, potong','2 liter air','4 siung bawang merah, 3 siung bawang putih','2 cm jahe, 1 sdt ketumbar, 1 sdt jintan','3 lembar daun salam, 2 batang serai','1 sdt kunyit bubuk','Telur rebus, soun, dan bawang goreng untuk pelengkap'],
+   langkah:['Rebus ayam dengan air dan daun salam.','Haluskan bumbu, tumis, lalu masukkan ke kuah.','Masak 30 menit, lalu sajikan dengan soun, telur, dan bawang goreng.']},
+  {id:'seisapi',nama:"Se'i Sapi",daerah:'Nusa Tenggara Timur',kategori:'Lauk',waktu:120,porsi:4,tingkat:'Sedang',
+   bahan:['1 kg daging sapi, iris tipis','1 sdm garam','Bawang putih dan merica secukupnya','Daun kemangi untuk aroma (opsional)'],
+   langkah:['Lumuri daging dengan garam, bawang putih, dan merica, lalu diamkan 1 jam.','Asap daging di atas bara kayu dengan api kecil hingga matang.','Sajikan hangat dengan sambal.']},
+  {id:'cendol',nama:'Es Cendol',daerah:'Jawa Barat',kategori:'Dessert',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['100 g tepung hunkwe atau tepung beras','100 ml air daun pandan','400 ml santan','100 g gula merah','1/2 sdt garam','Es batu secukupnya'],
+   langkah:['Campur tepung dengan air pandan, kukus hingga kalis, lalu cetak menjadi cendol dan rendam dalam air es.','Masak gula merah dengan sedikit air hingga kental, lalu saring.','Sajikan cendol dengan es batu, santan bergaram, dan sirup gula merah.']},
+  {id:'kolak',nama:'Kolak Pisang',daerah:'Nasional',kategori:'Dessert',waktu:25,porsi:4,tingkat:'Mudah',
+   bahan:['4 buah pisang kepok, potong','100 g gula merah','2 lembar daun pandan','1 sdt garam','400 ml santan encer','200 ml santan kental'],
+   langkah:['Rebus gula merah, pandan, dan air hingga larut, lalu saring.','Masukkan pisang dan santan encer, masak sampai pisang empuk.','Tambahkan santan kental dan garam, aduk sebentar, lalu sajikan hangat.']},
+  {id:'sumsum',nama:'Bubur Sumsum',daerah:'Pulau Jawa',kategori:'Dessert',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['100 g tepung beras','1 liter air daun pandan','1 sdt garam','150 g gula pasir','Santan kental untuk kuah'],
+   langkah:['Larutkan tepung beras dengan sedikit air, lalu masukkan ke air pandan mendidih sambil diaduk hingga mengental.','Tambahkan gula dan garam hingga larut.','Sajikan dengan kuah santan.']},
+  {id:'escampur',nama:'Es Campur',daerah:'DKI Jakarta',kategori:'Dessert',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['100 g agar-agar, potong dadu','100 g kolang-kaling','1 buah alpukat, potong dadu','1 buah nangka, potong','200 g cincau atau ketan hitam rebus','Susu kental manis, sirup merah, dan es serut secukupnya'],
+   langkah:['Siapkan semua isian dan dinginkan di kulkas.','Susun isian di gelas, lalu tambahkan es serut.','Beri susu kental manis dan sirup, lalu sajikan segera.']},
+  {id:'dadar',nama:'Dadar Gulung',daerah:'DKI Jakarta',kategori:'Dessert',waktu:35,porsi:6,tingkat:'Sedang',
+   bahan:['100 g tepung terigu','2 butir telur','200 ml santan','1 lembar daun pandan, blender bersama santan','Sedikit garam','Isian: 100 g kelapa parut, 75 g gula merah, 1 sdm air pandan'],
+   langkah:['Blender tepung, telur, santan pandan, dan garam hingga halus, lalu diamkan 15 menit.','Tuang sedikit adonan ke wajan anti lengket dan masak tipis seperti crepe.','Isi dengan kelapa gula merah, lalu gulung.']},
+  {id:'wajik',nama:'Wajik',daerah:'Jawa Tengah',kategori:'Dessert',waktu:90,porsi:8,tingkat:'Sulit',
+   bahan:['500 g beras ketan, rendam 3 jam lalu kukus','250 g gula pasir','250 g gula merah, sisir','250 ml santan','2 lembar daun pandan','Sedikit garam'],
+   langkah:['Masak gula, gula merah, santan, pandan, dan garam hingga mendidih.','Masukkan ketan kukus, aduk dengan api kecil hingga kering dan lengket.','Tuang ke loyang yang sudah dialasi, ratakan, lalu potong setelah dingin.']},
+  {id:'ketanhitam',nama:'Bubur Ketan Hitam',daerah:'Nasional',kategori:'Dessert',waktu:60,porsi:4,tingkat:'Mudah',
+   bahan:['150 g ketan hitam, rendam semalam','1,5 liter air','100 g gula merah','2 lembar daun pandan','200 ml santan kental','Garam secukupnya'],
+   langkah:['Rebus ketan hitam dengan air dan pandan hingga empuk, sekitar 45 menit.','Tambahkan gula merah dan garam, masak hingga mengental.','Sajikan hangat dengan santan.']},
+  {id:'bakso',nama:'Bakso Sapi',daerah:'Jawa Timur',kategori:'Sup',waktu:90,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging sapi, giling halus','50 g tepung tapioka','2 siung bawang putih, haluskan','1 sdt garam dan 1/2 sdt merica','1 liter kaldu sapi','Mie kuning, bihun, bawang goreng, dan sambal untuk pelengkap'],
+   langkah:['Uleni daging, tapioka, dan bumbu hingga kalis.','Bentuk bulat, lalu rebus hingga mengapung.','Sajikan dalam kaldu panas bersama mie, bihun, dan bawang goreng.']},
+  {id:'sotoayam',nama:'Soto Ayam',daerah:'Jawa Timur',kategori:'Sup',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ayam, potong','1,5 liter air','4 siung bawang putih, 5 siung bawang merah','2 cm jahe, 2 cm kunyit, 2 lembar daun salam','1 batang serai','Bihun, telur rebus, bawang goreng, dan seledri untuk pelengkap'],
+   langkah:['Rebus ayam dengan air, daun salam, dan serai hingga matang, lalu suwir.','Haluskan bumbu, tumis sebentar, lalu masukkan ke kuah.','Sajikan kuah dengan bihun, suwiran ayam, telur, dan bawang goreng.']},
+  {id:'rawon',nama:'Rawon',daerah:'Jawa Timur',kategori:'Sup',waktu:120,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging sapi, potong','2 liter air','3 sdm kluwek, larutkan dengan air','5 siung bawang merah, 3 siung bawang putih','3 cm lengkuas, 2 batang serai, 3 lembar daun jeruk','1 sdt ketumbar dan 1 sdt kemiri','Tauge, sambal, dan telur asin untuk pelengkap'],
+   langkah:['Rebus daging hingga empuk.','Haluskan bumbu dan kluwek, tumis hingga harum, lalu masukkan ke kuah.','Masak 30 menit hingga bumbu meresap. Sajikan dengan tauge dan telur asin.']},
+  {id:'nasiuduk',nama:'Nasi Uduk',daerah:'DKI Jakarta',kategori:'Nasi',waktu:50,porsi:4,tingkat:'Sedang',
+   bahan:['2 gelas beras','400 ml santan','2 lembar daun salam, 1 batang serai','2 cm jahe dan 1 sdt garam','Ayam goreng, telur dadar, dan emping untuk pelengkap','Bawang goreng dan sambal'],
+   langkah:['Masak beras dengan santan, daun salam, serai, jahe, dan garam.','Setelah nasi hampir matang, kukus sebentar agar pulen.','Sajikan dengan ayam goreng, telur, emping, bawang goreng, dan sambal.']},
+  {id:'nasikuning',nama:'Nasi Kuning',daerah:'Nasional',kategori:'Nasi',waktu:50,porsi:4,tingkat:'Sedang',
+   bahan:['2 gelas beras','400 ml santan','2 cm kunyit, haluskan','2 lembar daun salam, 1 batang serai','1 sdt garam','Telur dadar, abon, ikan teri goreng, dan timun untuk pelengkap'],
+   langkah:['Masak beras dengan santan, kunyit halus, daun salam, serai, dan garam.','Kukus nasi hingga pulen dan wangi.','Sajikan dengan telur, abon, teri goreng, dan irisan timun.']},
+  {id:'sateayam',nama:'Sate Ayam Madura',daerah:'Jawa Timur',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging ayam, potong dadu','3 sdm kecap manis','2 siung bawang putih, 3 siung bawang merah','1 sdt ketumbar dan 1 sdt garam','Kacang tanah, cabai, dan gula merah untuk bumbu kacang','Tusuk sate dan minyak'],
+   langkah:['Haluskan bumbu, lalu campur dengan ayam dan kecap manis. Diamkan 30 menit.','Tusuk ayam, lalu panggang sambil dioles minyak.','Haluskan kacang, cabai, dan gula merah untuk bumbu kacang.','Sajikan sate dengan bumbu kacang dan irisan bawang merah.']},
+  {id:'martabak',nama:'Martabak Telor',daerah:'Nasional',kategori:'Camilan',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['250 g tepung terigu','200 ml air','4 butir telur','200 g daging giling, tumis dengan bawang','1 batang daun bawang, iris','Garam, merica, dan bawang merah secukupnya','Minyak goreng untuk menggoreng'],
+   langkah:['Buat adonan dari tepung, air, dan garam. Diamkan 30 menit.','Tipiskan adonan di wajan berminyak, beri telur, daging, dan daun bawang.','Lipat dan goreng hingga kecokelatan di kedua sisi.']},
+  {id:'ketoprak',nama:'Ketoprak',daerah:'DKI Jakarta',kategori:'Sayur',waktu:35,porsi:2,tingkat:'Mudah',
+   bahan:['100 g tahu, potong dadu lalu goreng','100 g tauge, rebus sebentar','1 buah lontong, potong','1 butir telur rebus, potong','Kacang tanah, gula merah, cabai rawit, dan garam untuk bumbu','Air secukupnya','Kerupuk putih untuk pelengkap'],
+   langkah:['Haluskan kacang, gula merah, cabai, dan garam, lalu encerkan dengan air.','Tata tahu, tauge, lontong, dan telur di piring.','Siram bumbu kacang dan sajikan dengan kerupuk.']},
+  {id:'rujakcingur',nama:'Rujak Cingur',daerah:'Jawa Timur',kategori:'Sayur',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['100 g cingur sapi, rebus dan iris','1 buah tahu dan 1 buah tempe, goreng','1 buah mangga muda dan 1 buah timun, iris','100 g tauge dan kangkung, rebus','Gula merah, petis, kacang, cabai, garam, dan air asam jawa'],
+   langkah:['Haluskan kacang, cabai, gula merah, dan garam, lalu campur dengan petis dan air asam.','Tata sayur, buah, tahu, tempe, dan cingur di piring.','Siram dengan bumbu petis dan sajikan segera.']},
+  {id:'seblak',nama:'Seblak',daerah:'Jawa Barat',kategori:'Camilan',waktu:25,porsi:2,tingkat:'Mudah',
+   bahan:['100 g kerupuk basah','1 batang sosis, iris','1 butir telur','2 siung bawang putih dan 4 cabai rawit, haluskan','1 sdm kaldu bubuk, garam, dan gula','500 ml air'],
+   langkah:['Tumis bumbu halus hingga harum.','Masukkan air, kaldu, dan kerupuk. Masak hingga kerupuk lunak.','Tambahkan sosis dan telur, masak sebentar, lalu sajikan panas.']},
+  {id:'pecellele',nama:'Pecel Lele',daerah:'Pulau Jawa',kategori:'Lauk',waktu:40,porsi:2,tingkat:'Mudah',
+   bahan:['2 ekor lele, bersihkan','1 sdt garam dan 1 sdt kunyit bubuk','Minyak goreng','Sambal terasi (cabai, terasi, tomat, garam)','Lalapan: kol, timun, kemangi, dan tahu atau tempe goreng'],
+   langkah:['Lumuri lele dengan garam dan kunyit, diamkan 15 menit.','Goreng lele hingga renyah dan kecokelatan.','Sajikan dengan sambal terasi dan lalapan.']},
+  {id:'siomay',nama:'Siomay Bandung',daerah:'Jawa Barat',kategori:'Camilan',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['250 g ikan tenggiri, giling halus','100 g tepung tapioka','1 butir telur','Garam, merica, dan bawang putih secukupnya','Kentang, kol, tahu, dan telur rebus untuk isian','Bumbu kacang dan kecap manis'],
+   langkah:['Uleni ikan dengan tapioka, telur, dan bumbu hingga kalis.','Bentuk adonan dan kukus hingga matang.','Potong isian, tata bersama siomay, lalu siram bumbu kacang kecap.']},
+  {id:'sotobetawi',nama:'Soto Betawi',daerah:'DKI Jakarta',kategori:'Sup',waktu:90,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging sapi, potong','1,5 liter air','3 siung bawang merah, 2 siung bawang putih','2 cm jahe, 2 cm kunyit','1 batang serai, 2 lembar daun salam','2 sdm kacang tanah sangrai, haluskan','Susu cair atau santan, sesuai selera','Garam dan merica secukupnya','Emping dan bawang goreng untuk pelengkap'],
+   langkah:['Rebus daging dengan air dan serai hingga empuk.','Haluskan bumbu lalu tumis sampai harum.','Masukkan tumisan bumbu ke kuah bersama daun salam dan kacang tanah.','Tambahkan susu atau santan, lalu masak 20 menit dengan api kecil.','Sajikan dengan emping dan bawang goreng.']},
+  {id:'betutu',nama:'Ayam Betutu',daerah:'Bali',kategori:'Lauk',waktu:180,porsi:4,tingkat:'Sulit',
+   bahan:['1 ekor ayam utuh, bersihkan','6 siung bawang merah, 4 siung bawang putih','5 buah cabai merah dan 3 cabai rawit','3 cm jahe, 3 cm kunyit, 2 cm lengkuas','2 batang serai, 4 lembar daun salam','1 sdt ketumbar, 1 sdt merica','Garam dan minyak secukupnya','Daun pisang untuk membungkus'],
+   langkah:['Haluskan semua bumbu, lalu lumuri ke seluruh bagian ayam.','Diamkan ayam 1 jam agar bumbu meresap.','Bungkus ayam dengan daun pisang, lalu ikat rapat.','Kukus sekitar 2 jam hingga ayam empuk.','Bakar sebentar agar bagian luarnya kecokelatan, lalu sajikan.']},
+  {id:'taliwang',nama:'Ayam Taliwang',daerah:'Nusa Tenggara Barat',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['1 kg ayam, potong','6 buah cabai merah dan 10 cabai rawit','4 siung bawang merah, 3 siung bawang putih','1 buah tomat kecil','1 sdm terasi, bakar sebentar','Garam, gula, dan asam jawa secukupnya','Minyak untuk menggoreng'],
+   langkah:['Goreng ayam hingga setengah matang, lalu tiriskan.','Haluskan cabai, bawang, tomat, dan terasi.','Tumis bumbu halus hingga harum dan matang.','Masukkan ayam, aduk rata, lalu tambahkan garam, gula, dan asam jawa.','Bakar atau panggang ayam sambil dioles bumbu sampai kecokelatan.']},
+  {id:'rica',nama:'Ayam Rica-rica',daerah:'Sulawesi Utara',kategori:'Lauk',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['1 kg ayam, potong','10 buah cabai rawit dan 5 buah cabai merah','5 siung bawang merah, 3 siung bawang putih','2 cm jahe, 1 batang serai','2 lembar daun jeruk','1 buah jeruk nipis','Garam dan minyak secukupnya'],
+   langkah:['Rebus ayam sebentar hingga setengah matang, lalu tiriskan.','Haluskan cabai, bawang, dan jahe.','Tumis bumbu halus dengan serai dan daun jeruk sampai harum.','Masukkan ayam dan masak hingga bumbu meresap dan kering.','Tambahkan perasan jeruk nipis, aduk, lalu sajikan.']},
+  {id:'dendeng',nama:'Dendeng Balado',daerah:'Sumatera Barat',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g daging sapi, iris tipis','Garam dan asam jawa secukupnya','Minyak untuk menggoreng','8 buah cabai merah dan 5 cabai rawit','4 siung bawang merah, 2 siung bawang putih','1 buah tomat kecil','Gula merah dan garam secukupnya'],
+   langkah:['Lumuri daging dengan garam dan asam jawa, lalu angin-anginkan 1 jam.','Goreng daging hingga kering dan kecokelatan, lalu tiriskan.','Haluskan cabai, bawang, dan tomat untuk sambal.','Tumis sambal hingga matang, lalu tambahkan gula merah dan garam.','Masukkan dendeng goreng, aduk rata, lalu sajikan.']},
+  {id:'lontongopor',nama:'Lontong Opor Ayam',daerah:'Jawa Tengah',kategori:'Nasi',waktu:90,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ayam, potong','4 buah lontong, potong','400 ml santan','3 siung bawang merah, 2 siung bawang putih','2 cm lengkuas, 2 lembar daun salam','2 batang serai','1 sdt ketumbar dan 1 sdt garam','Telur rebus dan bawang goreng untuk pelengkap'],
+   langkah:['Haluskan bumbu lalu tumis hingga harum bersama daun salam, lengkuas, dan serai.','Masukkan ayam dan aduk hingga berubah warna.','Tuang santan, masak dengan api kecil sekitar 40 menit sampai ayam empuk.','Sajikan opor dengan lontong, telur rebus, dan bawang goreng.']},
+  {id:'bikaambon',nama:'Bika Ambon',daerah:'Sumatera Utara',kategori:'Kue',waktu:120,porsi:8,tingkat:'Sulit',
+   bahan:['250 g tepung terigu','300 g gula pasir','6 butir telur','400 ml santan','1 sdt soda kue','1/2 sdt garam','1 sdt vanili','Mentega untuk mengolesi loyang'],
+   langkah:['Kocok telur dan gula hingga mengembang.','Masukkan santan, tepung, garam, dan vanili, lalu aduk rata.','Tambahkan soda kue, aduk cepat, lalu diamkan 15 menit.','Tuang ke loyang yang sudah diolesi mentega.','Panggang dalam oven 180 derajat sekitar 40 menit hingga matang dan berpori.']},
+  {id:'tinutuan',nama:'Tinutuan',daerah:'Sulawesi Utara',kategori:'Sup',waktu:40,porsi:4,tingkat:'Mudah',
+   bahan:['1 buah labu kuning, potong dadu','100 g bayam dan kangkung','1 genggam jagung manis pipil','1 genggam nasi putih atau ubi','1 liter air','2 siung bawang putih dan 2 siung bawang merah','1 batang serai dan 1 lembar daun salam','Garam dan merica secukupnya'],
+   langkah:['Didihkan air dengan bawang yang sudah dihaluskan, serai, dan daun salam.','Masukkan labu, jagung, dan nasi atau ubi. Masak hingga empuk.','Masukkan bayam dan kangkung, lalu masak sebentar.','Beri garam dan merica, lalu sajikan hangat.']},
+  {id:'ongdeonde',nama:'Onde-onde',daerah:'Jawa Barat',kategori:'Kue',waktu:45,porsi:6,tingkat:'Sedang',
+   bahan:['200 g tepung ketan','100 ml air daun pandan','50 g gula merah','50 g wijen sangrai','Minyak untuk menggoreng','Sedikit garam'],
+   langkah:['Campur tepung ketan dengan air pandan dan garam hingga kalis.','Bentuk bulat kecil, isi dengan gula merah, lalu tutup kembali.','Gulingkan adonan di wijen agar menempel.','Goreng dengan minyak sedang sambil sesekali diputar hingga mengembang dan kecokelatan.']},
+  {id:'surabi',nama:'Surabi',daerah:'Jawa Barat',kategori:'Camilan',waktu:25,porsi:8,tingkat:'Mudah',
+   bahan:['200 g tepung beras','100 g tepung terigu','300 ml santan','1 butir telur','1 sdt ragi instan','1 sdt gula pasir','1/2 sdt garam','Minyak untuk mengolesi cetakan'],
+   langkah:['Campur semua bahan kering, lalu tuang santan dan telur sambil diaduk.','Diamkan adonan 30 menit hingga mengembang.','Panaskan cetakan surabi dengan sedikit minyak.','Tuang adonan secukupnya, tutup sebentar hingga matang.','Sajikan hangat dengan parutan kelapa atau gula merah cair.']},
+  {id:'wedangjahe',nama:'Wedang Jahe',daerah:'Nasional',kategori:'Minuman',waktu:20,porsi:4,tingkat:'Mudah',
+   bahan:['5 cm jahe, geprek','2 batang serai, memarkan','3 lembar daun pandan','500 ml air','3 sdm gula merah','Jeruk nipis secukupnya (opsional)'],
+   langkah:['Rebus air bersama jahe, serai, dan daun pandan selama 10 menit.','Masukkan gula merah dan aduk hingga larut.','Saring ke gelas, lalu beri perasan jeruk nipis jika suka.','Sajikan hangat.']},
+  {id:'bajigur',nama:'Bajigur',daerah:'Jawa Barat',kategori:'Minuman',waktu:30,porsi:4,tingkat:'Sedang',
+   bahan:['500 ml santan','150 g gula merah','500 ml air','3 cm jahe, geprek','2 batang serai','1 batang kayu manis','1 butir kelapa muda, ambil dagingnya (opsional)','1 sdt vanili','Garam secukupnya'],
+   langkah:['Rebus air dengan jahe, serai, dan kayu manis selama 10 menit.','Masukkan gula merah dan garam, aduk hingga larut.','Tuang santan sambil diaduk perlahan agar tidak pecah.','Masak dengan api kecil hingga mendidih, lalu tambahkan vanili dan daging kelapa.','Sajikan hangat.']},
+  {id:'bandrek',nama:'Bandrek',daerah:'Jawa Barat',kategori:'Minuman',waktu:20,porsi:4,tingkat:'Mudah',
+   bahan:['1 liter air','3 cm jahe, geprek','2 batang serai','1 batang kayu manis','4 butir cengkeh','150 g gula merah','Santan encer (opsional)'],
+   langkah:['Rebus air bersama jahe, serai, kayu manis, dan cengkeh selama 10 menit.','Masukkan gula merah dan aduk hingga larut.','Saring, lalu sajikan hangat. Boleh ditambah santan encer.']},
+  {id:'wedanguwuh',nama:'Wedang Uwuh',daerah:'DI Yogyakarta',kategori:'Minuman',waktu:25,porsi:4,tingkat:'Mudah',
+   bahan:['1 liter air','1 genggam rempah uwuh (secang, cengkeh, kayu manis, jahe, adas)','2 sdm gula batu atau gula pasir','Beberapa lembar daun kering (opsional)'],
+   langkah:['Rebus air hingga mendidih.','Masukkan rempah uwuh dan kecilkan api.','Rebus 15 menit hingga warna air merah kecokelatan.','Saring, tambahkan gula, lalu sajikan hangat.']},
+  {id:'esteler',nama:'Es Teler',daerah:'DKI Jakarta',kategori:'Minuman',waktu:30,porsi:4,tingkat:'Sedang',
+   bahan:['1 buah alpukat, potong dadu','1 buah nangka, potong','2 buah kelapa muda, ambil dagingnya','100 ml susu kental manis','200 ml santan','Es batu secukupnya','Gula dan garam secukupnya'],
+   langkah:['Siapkan potongan alpukat, nangka, dan kelapa muda. Dinginkan.','Campur santan dengan sedikit garam dan gula, lalu dinginkan.','Isi gelas dengan campuran buah dan es batu.','Tuang santan dan beri susu kental manis di atasnya. Sajikan segera.']},
+  {id:'sekoteng',nama:'Sekoteng',daerah:'DKI Jakarta',kategori:'Minuman',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['1 liter air','3 cm jahe, geprek','2 batang serai','1 batang kayu manis','100 g kacang tanah, sangrai','50 g kacang hijau, rebus lunak','50 g tepung ketan putih','150 g gula merah','Garam secukupnya'],
+   langkah:['Rebus air bersama jahe, serai, dan kayu manis.','Masukkan kacang hijau dan kacang tanah. Masak hingga empuk.','Bentuk bola kecil dari tepung ketan, rebus hingga mengapung, lalu tiriskan.','Tambahkan gula merah dan garam hingga larut.','Sajikan hangat dengan bola ketan di dalam mangkuk.']},
+  {id:'tehtalua',nama:'Teh Talua',daerah:'Sumatera Barat',kategori:'Minuman',waktu:10,porsi:2,tingkat:'Mudah',
+   bahan:['2 butir telur ayam kampung','300 ml air teh panas','1 sdm gula pasir','Sedikit garam'],
+   langkah:['Kocok telur, gula, dan sedikit garam hingga berbusa.','Seduh teh dengan air panas, lalu saring.','Tuang teh panas sedikit demi sedikit ke dalam kocokan telur sambil diaduk.','Sajikan hangat.']},
+  {id:'miecelor',nama:'Mie Celor',daerah:'Sumatera Selatan',kategori:'Mie',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['200 g mie kuning basah','500 ml air','250 g udang kecil, kupas','2 siung bawang putih, haluskan','1 sdt ketumbar bubuk','3 sdm tepung beras (pengental)','2 batang daun bawang, iris','Garam dan merica secukupnya','Bawang goreng dan jeruk nipis untuk pelengkap'],
+   langkah:['Rebus udang dengan air dan bawang putih serta ketumbar hingga matang dan kaldunya harum.','Larutkan tepung beras dengan sedikit air, lalu masukkan ke kaldu sambil diaduk hingga mengental.','Rebus mie kuning hingga matang, lalu tiriskan.','Tata mie di mangkuk, siram kuah udang kental, taburi daun bawang dan bawang goreng, lalu beri perasan jeruk nipis.']},
+  {id:'miekocok',nama:'Mie Kocok',daerah:'Jawa Barat',kategori:'Mie',waktu:90,porsi:4,tingkat:'Sulit',
+   bahan:['200 g mie kuning','500 g kikil sapi','1 liter kaldu sapi','2 siung bawang putih, 3 siung bawang merah','2 cm jahe dan 1 sdt merica','2 lembar daun salam','Kol, tauge, dan seledri untuk pelengkap','Garam dan kecap secukupnya','Emping dan sambal untuk pelengkap'],
+   langkah:['Rebus kikil hingga empuk, lalu potong kecil.','Didihkan kaldu sapi dengan bumbu halus dan daun salam hingga harum.','Rebus mie, tiriskan, lalu tata di mangkuk bersama kikil dan sayuran.','Siram kuah kaldu panas, lalu sajikan dengan emping dan sambal.']},
+  {id:'miegorengjawa',nama:'Mie Goreng Jawa',daerah:'Pulau Jawa',kategori:'Mie',waktu:30,porsi:2,tingkat:'Mudah',
+   bahan:['200 g mie kuning basah','1 butir telur','100 g sawi hijau, iris','1 batang daun bawang, iris','3 siung bawang merah, 2 siung bawang putih','2 sdm kecap manis','1 sdm saus tomat','1 sdm minyak goreng','Garam dan merica secukupnya','Bawang goreng untuk pelengkap'],
+   langkah:['Rebus mie sebentar hingga matang, lalu tiriskan.','Tumis bawang merah dan bawang putih hingga harum.','Masukkan telur dan orak-arik, lalu tambahkan sawi dan daun bawang.','Masukkan mie, kecap manis, saus tomat, garam, dan merica. Aduk rata sekitar 2 menit.','Sajikan dengan taburan bawang goreng.']},
+  {id:'kuelapis',nama:'Kue Lapis',daerah:'Nasional',kategori:'Kue',waktu:90,porsi:10,tingkat:'Sulit',
+   bahan:['200 g tepung terigu','200 g gula pasir','6 butir telur','400 ml santan','1 sdt vanili','1/2 sdt garam','Pewarna makanan, beberapa warna (opsional)','Mentega untuk mengolesi loyang'],
+   langkah:['Kocok telur dan gula hingga mengembang.','Masukkan tepung, santan, garam, dan vanili, lalu aduk rata. Bagi adonan ke beberapa wadah sesuai jumlah warna.','Beri pewarna pada tiap wadah sesuai selera.','Tuang satu lapis adonan ke loyang yang sudah diolesi mentega, kukus 5 menit. Ulangi sampai adonan habis.','Dinginkan, potong kotak-kotak, lalu sajikan.']},
+  {id:'kuecucur',nama:'Kue Cucur',daerah:'Pulau Jawa',kategori:'Kue',waktu:35,porsi:8,tingkat:'Mudah',
+   bahan:['250 g tepung beras','100 g gula merah','150 ml air','2 butir telur','1 sdt ragi instan','Sedikit garam','Minyak goreng untuk menggoreng'],
+   langkah:['Larutkan gula merah dengan air, lalu saring.','Campur tepung beras, ragi, dan garam. Tuang air gula sedikit demi sedikit sambil diaduk.','Masukkan telur dan aduk hingga rata. Diamkan 30 menit hingga mengembang.','Goreng adonan dengan sendok di minyak panas hingga kecokelatan dan matang.']},
+  {id:'lemperayam',nama:'Lemper Ayam',daerah:'Jawa Tengah',kategori:'Kue',waktu:75,porsi:10,tingkat:'Sedang',
+   bahan:['300 g beras ketan, kukus setengah matang','200 g daging ayam, giling atau suwir','2 siung bawang merah, 1 siung bawang putih','2 sdm kecap manis','1 batang serai dan 2 lembar daun salam','200 ml santan','Daun pisang untuk membungkus'],
+   langkah:['Tumis bawang, serai, dan daun salam, lalu masukkan ayam hingga matang.','Beri kecap manis dan garam, lalu masak hingga kering.','Campur ketan kukus dengan santan dan garam, lalu kukus lagi hingga matang.','Ambil ketan, isi dengan ayam, bungkus dengan daun pisang, lalu kukus 10 menit.']},
+  {id:'sayurlodeh',nama:'Sayur Lodeh',daerah:'Pulau Jawa',kategori:'Sayur',waktu:50,porsi:4,tingkat:'Sedang',
+   bahan:['1 buah labu siam, potong','1 buah terong, potong','100 g kacang panjang, potong','1 batang tahu atau tempe, potong','400 ml santan','3 siung bawang merah, 2 siung bawang putih, 3 buah kemiri','2 cm lengkuas, 2 lembar daun salam','1 batang serai','Garam dan gula secukupnya'],
+   langkah:['Haluskan bawang, kemiri, dan sedikit cabai.','Tumis bumbu halus dengan daun salam, lengkuas, dan serai hingga harum.','Tuang air dan santan, lalu didihkan.','Masukkan tahu atau tempe, lalu labu, terong, dan kacang panjang. Masak hingga sayur empuk.','Beri garam dan gula, lalu sajikan.']},
+  {id:'pecel',nama:'Pecel',daerah:'Jawa Timur',kategori:'Sayur',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['Sayuran rebus: kangkung, tauge, bayam, dan kacang panjang','1 papan tempe goreng','150 g kacang tanah sangrai','2 cm gula merah, 4 cabai rawit, 1 siung bawang putih','Garam dan asam jawa secukupnya','Air secukupnya'],
+   langkah:['Rebus sayuran sebentar hingga matang tetapi tetap segar.','Haluskan kacang, gula merah, cabai, bawang putih, dan garam.','Encerkan bumbu dengan asam jawa dan air secukupnya.','Tata sayuran dan tempe di piring, lalu siram bumbu kacang.']},
+  {id:'sayurbening',nama:'Sayur Bening Bayam',daerah:'Nasional',kategori:'Sayur',waktu:20,porsi:4,tingkat:'Mudah',
+   bahan:['1 ikat bayam, petik daunnya','1 buah jagung manis, potong','1 buah tomat, potong','2 siung bawang putih, 2 siung bawang merah, iris','1 liter air','1 sdt garam dan 1/2 sdt gula','1 lembar daun salam'],
+   langkah:['Didihkan air bersama bawang, daun salam, dan jagung.','Masukkan tomat, lalu garam dan gula.','Masukkan bayam, masak sebentar hingga layu.','Sajikan hangat.']},
+  {id:'plecing',nama:'Plecing Kangkung',daerah:'Nusa Tenggara Barat',kategori:'Sayur',waktu:25,porsi:4,tingkat:'Mudah',
+   bahan:['1 ikat kangkung, potong 5 cm','100 g tauge','3 buah cabai rawit','2 siung bawang putih','1 sdm terasi, bakar sebentar','1 buah jeruk limau atau jeruk nipis','Garam dan gula secukupnya'],
+   langkah:['Rebus kangkung dan tauge sebentar, lalu tiriskan.','Haluskan cabai, bawang putih, terasi, garam, dan gula.','Tambahkan perasan jeruk ke bumbu dan aduk.','Campur sayuran dengan bumbu, lalu sajikan segera.']},
+  {id:'konro',nama:'Sup Konro',daerah:'Sulawesi Selatan',kategori:'Sup',waktu:180,porsi:4,tingkat:'Sulit',
+   bahan:['1 kg iga sapi, potong','2 liter air','5 siung bawang merah, 4 siung bawang putih','3 cm jahe, 3 cm lengkuas','2 batang serai','3 buah kluwek, larutkan dengan air','2 sdm kacang tanah sangrai, haluskan','Merica, garam, dan daun salam secukupnya'],
+   langkah:['Rebus iga sapi dengan air hingga mendidih, lalu buang air rebusan pertama.','Haluskan bawang, jahe, lengkuas, dan merica, lalu tumis hingga harum.','Masukkan tumisan, kluwek, daun salam, dan serai ke dalam kuah iga.','Masak sekitar 2 jam dengan api kecil hingga iga empuk dan kuah mengental.','Tambahkan kacang tanah halus dan garam, lalu sajikan.']},
+  {id:'arsik',nama:'Arsik Ikan Mas',daerah:'Sumatera Utara',kategori:'Lauk',waktu:90,porsi:4,tingkat:'Sulit',
+   bahan:['1 ekor ikan mas, bersihkan','5 buah cabai merah','5 siung bawang merah, 3 siung bawang putih','3 cm kunyit dan 2 cm jahe','2 batang serai','1 sdm asam jawa','2 lembar daun salam','Garam dan air secukupnya'],
+   langkah:['Haluskan cabai, bawang, kunyit, dan jahe.','Tumis bumbu halus bersama serai dan daun salam hingga harum.','Tuang air dan asam jawa, lalu didihkan.','Masukkan ikan dan masak dengan api kecil hingga matang dan bumbu meresap.','Sajikan dengan nasi hangat.']},
+  {id:'tempoyak',nama:'Gulai Tempoyak Ikan',daerah:'Jambi',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ikan patin, potong','150 g tempoyak (durian fermentasi)','400 ml santan','5 siung bawang merah, 3 siung bawang putih','4 buah cabai merah dan 3 cabai rawit','2 cm lengkuas dan 2 lembar daun salam','Garam dan asam jawa secukupnya'],
+   langkah:['Haluskan bawang, cabai, dan lengkuas.','Tumis bumbu halus dengan daun salam hingga harum.','Tuang santan dan tempoyak, lalu didihkan dengan api kecil.','Masukkan ikan dan masak hingga matang. Beri garam dan asam jawa.']},
+  {id:'pindangpatin',nama:'Pindang Patin',daerah:'Sumatera Selatan',kategori:'Sup',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ikan patin, potong','1,5 liter air','5 siung bawang merah, 3 siung bawang putih','4 buah cabai merah dan 4 cabai rawit','1 buah tomat','3 batang serai','2 lembar daun salam','Garam, asam jawa, dan kunyit secukupnya'],
+   langkah:['Didihkan air dengan serai dan daun salam.','Haluskan bawang, cabai, dan tomat, lalu masukkan ke kuah bersama kunyit dan asam jawa.','Masukkan ikan dan masak hingga matang.','Beri garam secukupnya, lalu sajikan panas.']},
+  {id:'seruit',nama:'Seruit Ikan',daerah:'Lampung',kategori:'Lauk',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['4 ekor ikan kembung','10 buah cabai rawit','4 siung bawang merah, 2 siung bawang putih','1 buah terasi, bakar sebentar','1 buah tomat','1 buah jeruk nipis','Garam dan gula secukupnya'],
+   langkah:['Bakar ikan hingga matang dan kulitnya sedikit renyah. Suwir dagingnya.','Haluskan cabai, bawang, terasi, tomat, dan garam.','Tambahkan gula dan perasan jeruk nipis ke sambal, lalu aduk rata.','Campur suwiran ikan dengan sambal seruit, lalu sajikan dengan nasi.']},
+  {id:'gulainangka',nama:'Gulai Nangka',daerah:'Sumatera Barat',kategori:'Sayur',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['1 buah nangka muda, potong','400 ml santan','5 siung bawang merah, 3 siung bawang putih','5 buah cabai merah','2 cm jahe dan 2 cm kunyit','3 lembar daun salam dan 2 batang serai','Garam dan gula secukupnya'],
+   langkah:['Haluskan bumbu, lalu tumis bersama daun salam dan serai hingga harum.','Masukkan nangka dan tumis sebentar.','Tuang santan, didihkan, lalu kecilkan api.','Masak sekitar 40 menit sampai nangka empuk dan kuah mengental. Beri garam dan gula.']},
+  {id:'batagor',nama:'Batagor',daerah:'Jawa Barat',kategori:'Camilan',waktu:60,porsi:6,tingkat:'Sedang',
+   bahan:['250 g ikan tenggiri, giling halus','100 g tepung tapioka','1 butir telur','3 siung bawang putih, haluskan','Garam dan merica secukupnya','Tahu dan pangsit untuk isian','Saus kacang dan kecap manis untuk bumbu','Minyak untuk menggoreng'],
+   langkah:['Uleni ikan dengan tapioka, telur, bawang putih, garam, dan merica hingga kalis.','Isi tahu dan pangsit dengan adonan ikan, lalu kukus 15 menit.','Goreng hingga kecokelatan.','Potong-potong, lalu sajikan dengan saus kacang dan kecap manis.']},
+  {id:'otakotak',nama:'Otak-otak Bangka',daerah:'Bangka Belitung',kategori:'Camilan',waktu:45,porsi:6,tingkat:'Sedang',
+   bahan:['250 g ikan tenggiri, giling halus','100 g tepung sagu atau tapioka','1 butir telur','2 siung bawang putih, haluskan','Garam dan merica secukupnya','Daun kemangi dan daun pisang untuk membungkus','Sedikit minyak untuk mengoles'],
+   langkah:['Uleni ikan dengan sagu, telur, bawang putih, garam, dan merica.','Bentuk adonan lonjong, tambahkan daun kemangi, lalu bungkus daun pisang.','Panggang di atas bara atau wajan dengan api kecil sambil dioles minyak.','Sajikan hangat.']},
+  {id:'buburpedas',nama:'Bubur Pedas',daerah:'Kalimantan Barat',kategori:'Sup',waktu:40,porsi:4,tingkat:'Mudah',
+   bahan:['150 g beras, cuci bersih','1,5 liter air','100 g ikan atau ayam suwir (opsional)','5 buah cabai rawit, 4 siung bawang merah, 2 siung bawang putih','2 batang kacang panjang, potong','1 buah terong, potong','Daun kemangi dan garam secukupnya'],
+   langkah:['Rebus beras dengan air hingga menjadi bubur.','Haluskan cabai, bawang merah, dan bawang putih.','Masukkan bumbu halus, ikan atau ayam, lalu masak hingga matang.','Tambahkan kacang panjang dan terong, masak sebentar, lalu beri garam dan kemangi.']},
+  {id:'jagungbose',nama:'Jagung Bose',daerah:'Nusa Tenggara Timur',kategori:'Camilan',waktu:40,porsi:4,tingkat:'Mudah',
+   bahan:['2 buah jagung pipil','100 g kacang tanah sangrai','1 liter air','2 lembar daun pandan','Garam dan santan secukupnya'],
+   langkah:['Didihkan air bersama jagung dan daun pandan.','Masak hingga jagung empuk dan kuah mengental.','Tambahkan kacang tanah dan santan, masak sebentar.','Beri garam, lalu sajikan hangat.']},
+  {id:'binte',nama:'Binte Biluhuta',daerah:'Gorontalo',kategori:'Sup',waktu:40,porsi:4,tingkat:'Mudah',
+   bahan:['1 buah jagung manis, pipil','150 g ikan cakalang atau tuna, suwir','1 liter air','3 siung bawang merah, 2 siung bawang putih','1 buah tomat','Daun kemangi, daun bawang, dan jeruk limau secukupnya','Garam dan merica secukupnya'],
+   langkah:['Rebus jagung dengan air hingga empuk.','Haluskan bawang merah, bawang putih, dan tomat, lalu masukkan ke kuah.','Masukkan ikan, masak hingga matang.','Beri garam, merica, dan kemangi. Sajikan dengan perasan jeruk limau.']},
+  {id:'lontongbalap',nama:'Lontong Balap',daerah:'Jawa Timur',kategori:'Nasi',waktu:50,porsi:4,tingkat:'Sedang',
+   bahan:['4 buah lontong, potong','100 g tauge','1 buah tahu, goreng dan potong','Bumbu kacang: 100 g kacang tanah, 2 sdm gula merah, cabai, garam, dan air asam','Kecap manis dan sambal secukupnya','Bawang goreng untuk pelengkap'],
+   langkah:['Rebus tauge sebentar, lalu tiriskan.','Haluskan kacang, gula merah, cabai, dan garam, lalu encerkan dengan air asam.','Tata lontong, tahu, dan tauge di piring.','Siram bumbu kacang, beri kecap dan sambal, lalu taburi bawang goreng.']},
+  {id:'amplang',nama:'Amplang Ikan',daerah:'Kalimantan Timur',kategori:'Camilan',waktu:90,porsi:10,tingkat:'Sedang',
+   bahan:['250 g ikan tenggiri, giling halus','100 g tapioka','1 sdt garam','1 butir telur','2 siung bawang putih, haluskan','Minyak goreng untuk menggoreng'],
+   langkah:['Uleni ikan, tapioka, telur, bawang putih, dan garam hingga kalis.','Pipihkan adonan tipis, lalu potong memanjang.','Kukus sebentar hingga setengah matang, lalu dinginkan dan iris lebih tipis.','Angin-anginkan hingga kering, lalu goreng hingga renyah.']},
+  {id:'haruan',nama:'Ikan Haruan Bakar',daerah:'Kalimantan Selatan',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['2 ekor ikan haruan (gabus), bersihkan','4 siung bawang merah, 3 siung bawang putih','3 cm kunyit dan 2 cm jahe','1 sdt ketumbar','1 sdm gula merah','Garam dan asam secukupnya','Daun pisang untuk membungkus'],
+   langkah:['Haluskan bawang, kunyit, jahe, dan ketumbar.','Lumuri ikan dengan bumbu halus, gula merah, dan garam. Diamkan 30 menit.','Bungkus ikan dengan daun pisang.','Bakar di atas bara dengan api kecil sekitar 20 menit, balik sesekali hingga matang.']},
+  {id:'lempok',nama:'Lempok Durian',daerah:'Kalimantan Barat',kategori:'Dessert',waktu:120,porsi:8,tingkat:'Sulit',
+   bahan:['500 g daging durian matang, lumat','200 g gula pasir','200 ml santan kental','1 sdt garam'],
+   langkah:['Campur durian lumat dengan santan dan garam.','Masak dengan api kecil sambil terus diaduk agar tidak gosong.','Tambahkan gula dan aduk terus hingga adonan mengental dan tidak lengket di wajan.','Tuang ke wadah, ratakan, dinginkan, lalu potong.']},
+  {id:'kohukohu',nama:'Kohu-kohu',daerah:'Maluku',kategori:'Lauk',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['300 g ikan tuna yang sangat segar, potong dadu kecil','2 buah jeruk nipis','4 siung bawang merah, iris tipis','2 buah cabai rawit, iris','1 buah tomat, potong dadu','Daun kemangi dan daun seledri secukupnya','Garam dan minyak secukupnya'],
+   langkah:['Rendam ikan dengan perasan jeruk nipis sebentar hingga sedikit berubah warna, lalu tiriskan.','Campur ikan dengan bawang merah, cabai, dan tomat.','Tambahkan garam, minyak, serta irisan kemangi dan seledri.','Aduk rata dan sajikan segera.']},
+  {id:'sagulempeng',nama:'Sagu Lempeng',daerah:'Maluku',kategori:'Camilan',waktu:40,porsi:6,tingkat:'Mudah',
+   bahan:['300 g sagu tani','200 ml air hangat','1 butir kelapa parut (opsional)','Sedikit garam','Minyak untuk mengoles wajan'],
+   langkah:['Campur sagu dengan air hangat dan garam hingga menjadi adonan.','Tambahkan kelapa parut jika suka.','Tuang adonan tipis ke wajan panas yang sudah diolesi minyak.','Masak kedua sisi hingga kering dan sedikit kecokelatan, lalu lipat atau gulung.']},
+  {id:'ganemo',nama:'Sayur Ganemo',daerah:'Papua',kategori:'Sayur',waktu:40,porsi:4,tingkat:'Mudah',
+   bahan:['1 ikat daun melinjo (ganemo), potong','1 buah labu siam, potong','2 siung bawang merah, 2 siung bawang putih','2 buah cabai rawit','1 buah tomat','400 ml santan encer atau air kelapa','Garam dan sedikit gula secukupnya'],
+   langkah:['Haluskan bawang merah, bawang putih, dan cabai.','Tumis bumbu halus hingga harum, lalu masukkan tomat.','Tuang santan encer atau air kelapa, lalu didihkan.','Masukkan labu siam dan masak hingga empuk, lalu tambahkan daun melinjo.','Beri garam dan gula, lalu sajikan.']},
+  {id:'dabudabu',nama:'Ikan Bakar Dabu-dabu',daerah:'Papua',kategori:'Lauk',waktu:45,porsi:4,tingkat:'Mudah',
+   bahan:['4 ekor ikan kakap atau kembung, bersihkan','1 buah jeruk nipis','Garam dan merica secukupnya','Dabu-dabu: 2 buah tomat, 4 cabai rawit, 2 siung bawang merah, 1 batang daun bawang, daun kemangi, perasan jeruk nipis, dan garam'],
+   langkah:['Lumuri ikan dengan garam, merica, dan perasan jeruk nipis. Diamkan 15 menit.','Bakar ikan di atas bara atau panggang hingga matang.','Iris halus tomat, cabai, bawang merah, dan daun bawang untuk dabu-dabu.','Campur irisan dengan kemangi, perasan jeruk nipis, dan garam, lalu sajikan bersama ikan bakar.']},
+  {id:'nasiliwet',nama:'Nasi Liwet',daerah:'Jawa Tengah',kategori:'Nasi',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['2 gelas beras','400 ml santan','1 batang serai','2 lembar daun salam','2 cm lengkuas','3 siung bawang merah, haluskan','1 sdt garam','Ayam suwir atau telur rebus, teri goreng, dan kerupuk untuk pelengkap'],
+   langkah:['Tumis bawang merah halus bersama serai, lengkuas, dan daun salam.','Masukkan beras dan santan, tambahkan garam, lalu aduk.','Masak dengan api kecil hingga nasi hampir matang dan santan terserap.','Kukus sebentar agar pulen, lalu sajikan dengan lauk pelengkap.']},
+  {id:'sotokudus',nama:'Soto Kudus',daerah:'Jawa Tengah',kategori:'Sup',waktu:75,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ayam, potong','1,5 liter air','4 siung bawang putih, 4 siung bawang merah','2 cm jahe dan 2 cm kunyit','2 lembar daun salam dan 1 batang serai','Bihun, telur rebus, dan bawang goreng untuk pelengkap','Garam dan merica secukupnya'],
+   langkah:['Rebus ayam dengan air, daun salam, dan serai hingga matang. Angkat dan suwir.','Haluskan bawang, jahe, dan kunyit, lalu tumis hingga harum.','Masukkan tumisan ke kuah ayam dan masak 20 menit.','Sajikan dengan bihun, suwiran ayam, telur, dan bawang goreng.']},
+  {id:'tahucampur',nama:'Tahu Campur',daerah:'Jawa Timur',kategori:'Lauk',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['4 potong tahu goreng, potong','100 g tauge','100 g daging sapi rebus, iris tipis','Kol secukupnya','Kuah kaldu sapi dan bumbu kacang secukupnya','Kecap manis, bawang goreng, dan sambal'],
+   langkah:['Rebus tauge dan kol sebentar, lalu tiriskan.','Siapkan kuah kaldu sapi yang sudah dibumbui garam.','Tata tahu, daging, tauge, dan kol di mangkuk.','Siram kuah panas, beri kecap, bawang goreng, dan sambal.']},
+  {id:'ayampop',nama:'Ayam Pop',daerah:'Sumatera Barat',kategori:'Lauk',waktu:60,porsi:4,tingkat:'Sedang',
+   bahan:['1 ekor ayam, potong','5 siung bawang merah, 4 siung bawang putih','1 cm jahe dan 1 cm lengkuas','1 sdt ketumbar dan 1 sdt garam','2 lembar daun salam dan 2 batang serai','400 ml air','Minyak goreng secukupnya'],
+   langkah:['Haluskan bumbu, lalu tumis bersama daun salam dan serai.','Masukkan ayam dan air, masak hingga ayam empuk dan kuah menyusut.','Goreng ayam sebentar hingga kulitnya kering dan kecokelatan.','Sajikan dengan nasi putih dan sambal.']},
+  {id:'satepadang',nama:'Sate Padang',daerah:'Sumatera Barat',kategori:'Lauk',waktu:90,porsi:4,tingkat:'Sulit',
+   bahan:['500 g daging sapi, potong dadu','Tusuk sate','5 siung bawang merah, 3 siung bawang putih, 2 cm jahe, 2 cm kunyit, 1 sdt ketumbar','400 ml santan','2 lembar daun salam dan 1 batang serai','Tepung beras untuk mengentalkan','Garam secukupnya','Bawang merah iris dan cabai hijau untuk pelengkap'],
+   langkah:['Tusuk daging dan panggang sebentar hingga setengah matang.','Haluskan bumbu, lalu tumis bersama daun salam dan serai.','Masukkan santan, tepung beras, dan garam, lalu masak hingga kuah mengental.','Celupkan sate ke kuah, lalu sajikan dengan bawang merah dan cabai hijau.']},
+  {id:'martabakmanis',nama:'Martabak Manis',daerah:'Nasional',kategori:'Dessert',waktu:30,porsi:4,tingkat:'Mudah',
+   bahan:['250 g tepung terigu','1 sdt ragi instan','200 ml susu cair','1 butir telur','50 g gula pasir','50 g mentega, lelehkan','Topping: cokelat, keju, dan kacang sesuai selera','Sedikit garam'],
+   langkah:['Campur tepung, ragi, gula, dan garam. Tuang susu sedikit demi sedikit sambil diaduk.','Tambahkan telur dan mentega, lalu diamkan 1 jam hingga mengembang.','Tuang adonan ke wajan anti lengket dengan api kecil dan tutup hingga berlubang-lubang.','Beri topping, lalu lipat dan sajikan.']},
+  {id:'keraktelor',nama:'Kerak Telor',daerah:'DKI Jakarta',kategori:'Camilan',waktu:30,porsi:4,tingkat:'Sedang',
+   bahan:['200 g beras ketan putih, sangrai dan tumbuk kasar','1 butir telur','100 g kelapa parut sangrai','1 sdt ebi kering, haluskan','1 sdt garam dan 1/2 sdt gula','Sedikit minyak kelapa'],
+   langkah:['Campur beras ketan sangrai dengan kelapa, ebi, garam, dan gula.','Panaskan wajan tanpa minyak, lalu pecahkan telur di atasnya.','Tambahkan adonan ketan dan ratakan di atas telur.','Masak hingga kering dan kerak terbentuk, lalu angkat dan sajikan.']},
+  {id:'nasiulam',nama:'Nasi Ulam',daerah:'DKI Jakarta',kategori:'Nasi',waktu:45,porsi:4,tingkat:'Sedang',
+   bahan:['2 gelas nasi putih dingin','100 g kacang panjang, iris halus','100 g kecambah','50 g daun kemangi dan daun kenikir','1 buah timun, iris halus','100 g serundeng kelapa','Bumbu: 2 siung bawang putih, 3 cabai rawit, terasi, garam, dan perasan jeruk limau'],
+   langkah:['Iris halus semua sayuran dan daun-daunan.','Haluskan bumbu, lalu campur dengan nasi sampai rata.','Masukkan sayuran dan aduk pelan.','Taburi serundeng, lalu sajikan dengan lauk pelengkap.']},
+  {id:'spekkoek',nama:'Spekkoek',daerah:'Nasional',kategori:'Kue',waktu:240,porsi:12,tingkat:'Sulit',
+   bahan:['10 butir kuning telur','250 g mentega','250 g gula pasir','1 sdt vanili','1 sdt kayu manis bubuk','200 g tepung terigu','Mentega untuk mengolesi loyang'],
+   langkah:['Kocok mentega, gula, dan kuning telur hingga pucat dan mengembang.','Masukkan vanili dan kayu manis, lalu tambahkan tepung sedikit demi sedikit.','Tuang satu lapis tipis adonan ke loyang dan panggang hingga kecokelatan.','Ulangi sampai adonan habis, lalu dinginkan dan potong.']},
+  {id:'bakwanmalang',nama:'Bakwan Malang',daerah:'Jawa Timur',kategori:'Camilan',waktu:40,porsi:6,tingkat:'Mudah',
+   bahan:['100 g tepung terigu','50 g tepung beras','2 butir telur','100 g kol, iris','1 batang daun bawang, iris','2 siung bawang putih, haluskan','Garam dan merica secukupnya','Minyak goreng untuk menggoreng'],
+   langkah:['Campur tepung, telur, bawang putih, garam, dan merica hingga rata.','Masukkan kol dan daun bawang ke dalam adonan.','Goreng adonan dengan sendok di minyak panas hingga kecokelatan.','Tiriskan dan sajikan hangat.']},
+  {id:'esdoger',nama:'Es Doger',daerah:'Jawa Barat',kategori:'Minuman',waktu:20,porsi:4,tingkat:'Mudah',
+   bahan:['100 g alpukat, potong dadu','100 g tape ketan','100 g ketan hitam, rebus lunak','100 g dodol, potong dadu','200 ml susu kental manis','200 ml santan','Es serut secukupnya'],
+   langkah:['Siapkan semua isian dan dinginkan.','Campur santan dengan sedikit garam, lalu dinginkan.','Isi gelas dengan isian, lalu tambahkan es serut.','Tuang santan dan susu kental manis di atasnya, lalu sajikan.']},
+  {id:'dodolgarut',nama:'Dodol Garut',daerah:'Jawa Barat',kategori:'Kue',waktu:180,porsi:20,tingkat:'Sulit',
+   bahan:['500 g tepung ketan','1 liter santan','500 g gula merah','250 g gula pasir','1 sdt garam','2 lembar daun pandan'],
+   langkah:['Campur tepung ketan dengan santan hingga tidak bergerindil.','Masak dengan api sedang sambil terus diaduk, lalu tambahkan gula dan garam.','Lanjutkan mengaduk hingga adonan mengental dan berubah warna.','Tuang ke loyang, dinginkan, lalu potong.']},
+  {id:'ayamgeprek',nama:'Ayam Geprek',daerah:'Nasional',kategori:'Lauk',waktu:40,porsi:2,tingkat:'Mudah',
+   bahan:['2 potong ayam fillet atau paha ayam','100 g tepung bumbu','1 butir telur','5 buah cabai rawit, 2 siung bawang putih, dan garam untuk sambal','Minyak goreng untuk menggoreng','Nasi putih untuk pelengkap'],
+   langkah:['Lumuri ayam dengan telur, lalu balur dengan tepung bumbu.','Goreng hingga matang dan kecokelatan, lalu tiriskan.','Ulek cabai, bawang putih, dan garam hingga kasar.','Geprek ayam di atas ulekan sambal, lalu sajikan dengan nasi.']},
+  {id:'lawar',nama:'Lawar Kacang Panjang',daerah:'Bali',kategori:'Sayur',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['200 g kacang panjang, iris halus','100 g kelapa parut sangrai','2 siung bawang putih dan 4 siung bawang merah','3 buah cabai rawit','1 sdt terasi, bakar sebentar','1 sdt garam dan perasan jeruk limau secukupnya'],
+   langkah:['Rebus kacang panjang sebentar hingga layu, lalu tiriskan.','Haluskan bawang, cabai, terasi, dan garam.','Campur bumbu halus dengan kelapa sangrai dan kacang panjang.','Beri perasan jeruk limau, aduk rata, lalu sajikan.']},
+  {id:'sopbuntut',nama:'Sop Buntut',daerah:'DKI Jakarta',kategori:'Sup',waktu:150,porsi:4,tingkat:'Sedang',
+   bahan:['1 kg buntut sapi, potong','2 liter air','3 siung bawang putih, 5 siung bawang merah','2 cm jahe','2 batang serai dan 2 lembar daun salam','2 buah wortel, potong','Kentang, seledri, dan bawang goreng untuk pelengkap','Garam, merica, dan gula secukupnya'],
+   langkah:['Rebus buntut sapi hingga mendidih, lalu buang air rebusan pertama.','Tambahkan air baru, bumbu halus, serai, dan daun salam. Masak 2 jam hingga empuk.','Masukkan wortel dan kentang, lalu masak hingga empuk.','Beri garam, merica, dan gula, lalu sajikan dengan seledri dan bawang goreng.']},
+  {id:'ikanwoku',nama:'Ikan Woku Belanga',daerah:'Sulawesi Utara',kategori:'Lauk',waktu:40,porsi:4,tingkat:'Sedang',
+   bahan:['500 g ikan cakalang atau tongkol, potong','10 buah cabai rawit','5 siung bawang merah, 3 siung bawang putih','2 cm jahe dan 1 batang serai','3 lembar daun jeruk dan 1 genggam daun kemangi','2 buah tomat, iris','1 buah jeruk nipis','Garam secukupnya'],
+   langkah:['Haluskan cabai, bawang, dan jahe.','Tumis bumbu halus dengan serai dan daun jeruk hingga harum.','Masukkan tomat dan air secukupnya, lalu didihkan.','Masukkan ikan, masak hingga matang, lalu tambahkan kemangi dan perasan jeruk nipis.']},
+  {id:'klappertaart',nama:'Klappertaart',daerah:'Sulawesi Utara',kategori:'Dessert',waktu:75,porsi:8,tingkat:'Sulit',
+   bahan:['200 g kelapa parut','200 ml susu cair','100 g gula pasir','3 butir telur','1 sdm tepung maizena','1 sdt vanili','Adonan kue pastry untuk alas'],
+   langkah:['Panggang alas kue pastry hingga setengah matang, lalu dinginkan.','Campur kelapa parut, susu, gula, telur, maizena, dan vanili hingga rata.','Tuang isian ke atas alas kue.','Panggang dengan api sedang hingga permukaannya kecokelatan dan isian mengeras.']},
+];
+
+const LANGKAH = {
+nasgor:['Iris bawang merah, bawang putih, dan cabai. Ulek kasar jika suka.','Panaskan minyak, tumis bawang dan cabai sampai harum dan sedikit kecokelatan.','Masukkan nasi dingin, aduk cepat dengan api besar agar tidak menggumpal.','Tambahkan kecap manis, garam, dan merica. Aduk rata selama 2 menit.','Sisihkan nasi ke satu sisi wajan. Goreng telur dengan sedikit minyak hingga setengah matang.','Campur telur dengan nasi, lalu sajikan panas dengan kerupuk dan irisan timun.'],
+tempe:['Potong tempe dadu kecil, lalu goreng hingga kering kecokelatan. Tiriskan.','Iris bawang merah dan bawang putih. Geprek lengkuas.','Tumis bawang, bawang putih, daun salam, dan lengkuas sampai harum.','Masukkan air, kecap, dan gula merah. Didihkan sampai gula larut.','Masukkan tempe goreng, aduk, dan masak hingga air menyusut dan bumbu meresap.','Matikan api saat bumbu mengering dan mengilap. Sajikan dengan nasi hangat.'],
+telur:['Rebus telur 10 menit, dinginkan, lalu kupas dan belah dua.','Haluskan cabai merah, cabai rawit, bawang merah, bawang putih, dan tomat.','Tumis bumbu halus dengan sedikit minyak sampai matang dan wangi.','Tambahkan saus tomat, gula, dan garam. Masak hingga sambal mengental.','Masukkan telur dan balur dengan sambal hingga rata. Masak sebentar lalu angkat.'],
+sayur:['Rendam asam jawa dengan air hangat, lalu saring dan ambil airnya.','Haluskan bawang merah, bawang putih, dan cabai.','Didihkan 1 liter air dengan bumbu halus dan daun salam.','Masukkan labu siam dan jagung, masak sekitar 5 menit hingga sedikit empuk.','Masukkan kacang panjang, air asam, garam, dan gula. Masak 3 menit lalu matikan api.'],
+ayam:['Lumuri ayam dengan garam dan merica. Diamkan 15 menit.','Goreng ayam sebentar hingga setengah matang, lalu tiriskan.','Tumis bawang, jahe, dan daun jeruk sampai harum.','Masukkan ayam, tambahkan kecap manis dan air.','Masak dengan api kecil sekitar 20 menit hingga ayam empuk dan bumbu mengental.'],
+perkedel:['Rebus kentang hingga empuk, lalu kupas dan tumbuk halus.','Tumis bawang putih dan daging giling sampai matang, lalu dinginkan.','Campur kentang, daging, telur, daun bawang, dan bumbu hingga rata.','Bentuk bulat pipih, lalu gulingkan di tepung roti.','Goreng dengan api sedang hingga kecokelatan. Tiriskan sebelum disajikan.'],
+jeruk:['Peras jeruk, lalu saring jika ingin tanpa ampas.','Campur air jeruk dengan gula. Aduk sampai gula benar-benar larut.','Tambahkan air dingin dan aduk rata.','Isi gelas dengan es batu, lalu tuang campuran jeruk.','Sajikan segera selagi dingin.'],
+rendang:['Haluskan cabai, bawang merah, bawang putih, jahe, dan kunyit. Campur dengan ketumbar dan jintan.','Tumis bumbu halus bersama serai, lengkuas, dan daun jeruk sampai harum.','Masukkan daging dan santan encer. Masak sampai daging empuk dan bumbu meresap.','Tambahkan santan kental. Masak dengan api kecil sambil terus diaduk.','Lanjutkan memasak hingga santan mengering, minyak keluar, dan daging berwarna cokelat gelap.','Angkat dan sajikan dengan nasi putih.'],
+gudeg:['Iris tipis bawang merah dan bawang putih lalu tumis dengan daun salam dan lengkuas.','Masukkan nangka muda dan aduk rata bersama bumbu.','Tuang santan, gula merah, dan garam. Masak dengan api kecil.','Masak sekitar 90 menit sambil sesekali diaduk, hingga nangka empuk dan kuahnya mengental.','Rebus telur dan tambahkan ke gudeg sebelum disajikan.'],
+papeda:['Rebus ikan dengan air, kunyit, daun salam, dan garam hingga kuahnya kuning.','Campur sagu dengan sedikit air dingin hingga rata.','Tuang campuran sagu ke air mendidih sambil diaduk cepat.','Aduk terus sampai papeda mengental, bening, dan lengket.','Sajikan papeda dengan kuah ikan dan perasan jeruk nipis.'],
+coto:['Rebus daging dan jeroan hingga empuk. Buang air rebusan pertama.','Haluskan bawang, jahe, lengkuas, dan merica.','Tumis bumbu halus hingga harum, lalu masukkan ke kuah bersama serai dan daun salam.','Tambahkan kacang tanah yang sudah dihaluskan dan masak 30 menit.','Sesuaikan rasa dengan garam, lalu sajikan dengan ketupat dan taburan bawang goreng.'],
+pempek:['Giling ikan halus, lalu uleni dengan telur, garam, dan es batu.','Tambahkan tapioka sedikit demi sedikit sampai adonan kalis.','Bentuk lonjong sesuai ukuran yang diinginkan.','Rebus adonan hingga mengapung, lalu angkat dan tiriskan.','Goreng hingga kecokelatan. Buat cuko dari gula merah, cuka, dan cabai, lalu sajikan.'],
+satelilit:['Haluskan bumbu, lalu sangrai sebentar.','Campur bumbu dengan kelapa parut sangrai dan daging cincang.','Aduk rata sampai adonan lengket.','Lilitkan adonan di batang serai.','Panggang sambil diolesi minyak hingga matang dan sedikit kecokelatan.'],
+klepon:['Campur tepung ketan dengan air pandan sedikit demi sedikit sampai kalis.','Ambil sedikit adonan, pipihkan, lalu isi dengan potongan gula merah.','Tutup dan bulatkan adonan dengan rapi.','Rebus dalam air mendidih hingga klepon mengapung, sekitar 5 menit.','Tiriskan lalu gulingkan di kelapa parut yang sudah dikukus.'],
+gadogado:['Rebus kentang dan sayuran sampai matang tetapi masih renyah.','Goreng tahu dan tempe hingga kecokelatan.','Haluskan kacang tanah dengan gula merah, asam, garam, dan cabai.','Encerkan bumbu kacang dengan sedikit air hangat.','Tata sayur, kentang, tahu, tempe, dan telur di piring, lalu siram bumbu kacang.'],
+mieaceh:['Tumis bumbu halus sampai harum.','Masukkan daging, lalu tambahkan kari bubuk dan aduk rata.','Tuang kaldu sapi dan tomat, masak sampai daging empuk.','Masukkan telur dan orak-arik sambil dimasak.','Masukkan mie, aduk rata, lalu taburi daun bawang. Sajikan hangat.'],
+banjar:['Rebus ayam dengan air dan daun salam sampai matang.','Haluskan bawang, jahe, ketumbar, dan jintan.','Tumis bumbu halus hingga harum, lalu masukkan ke kuah bersama kunyit dan serai.','Masak sekitar 30 menit agar bumbu meresap.','Sajikan dengan soun, telur rebus, dan taburan bawang goreng.'],
+seisapi:['Iris daging tipis searah serat, lalu lumuri dengan garam, bawang putih, dan merica.','Diamkan selama 1 jam di kulkas agar bumbu meresap.','Tusuk daging dengan bambu atau tusuk sate yang sudah direndam.','Asap di atas bara kayu dengan api kecil sampai daging kering dan matang.','Sajikan hangat dengan sambal dan nasi jagung.'],
+cendol:['Campur tepung dengan air daun pandan sampai rata, lalu kukus hingga kalis.','Cetak adonan menggunakan saringan atau alat cetak cendol.','Rendam cendol dalam air es hingga dingin.','Masak gula merah dengan sedikit air sampai kental, lalu saring.','Siapkan santan dengan sedikit garam, lalu sajikan cendol dengan santan dan sirup gula merah di atas es serut.'],
+kolak:['Rebus gula merah, daun pandan, dan air hingga gula larut.','Saring lalu masukkan pisang dan santan encer.','Masak sampai pisang empuk dan kuah sedikit mengental.','Tambahkan santan kental dan garam. Aduk pelan agar santan tidak pecah.','Sajikan hangat atau dingin.'],
+sumsum:['Larutkan tepung beras dengan sedikit air dingin hingga tidak bergerindil.','Didihkan air pandan, lalu masukkan larutan tepung sambil diaduk.','Masak hingga adonan mengental dan bening.','Tambahkan gula dan garam, aduk sampai larut.','Sajikan dengan kuah santan yang sudah diberi sedikit garam.'],
+escampur:['Potong agar-agar, alpukat, dan nangka. Dinginkan semua isian.','Rebus kolang-kaling dan cincau atau ketan hitam jika perlu.','Susun isian di gelas sesuai selera.','Tambahkan es serut di atasnya.','Beri susu kental manis dan sirup merah, lalu sajikan segera.'],
+dadar:['Blender tepung, telur, santan pandan, dan garam hingga halus.','Diamkan adonan 15 menit agar tidak berlubang saat dimasak.','Tuang sedikit adonan ke wajan anti lengket dan masak tipis seperti crepe.','Masak isian kelapa parut dengan gula merah dan air pandan sampai kering.','Beri isian di tengah crepe, lalu gulung. Sajikan.'],
+wajik:['Rendam beras ketan selama 3 jam, lalu kukus sampai matang.','Masak gula pasir, gula merah, santan, pandan, dan garam sampai mendidih.','Masukkan ketan kukus dan aduk dengan api kecil.','Aduk terus hingga ketan kering dan lengket.','Tuang ke loyang yang sudah dialasi, ratakan, lalu potong setelah dingin.'],
+ketanhitam:['Rendam ketan hitam semalaman, lalu cuci bersih.','Rebus ketan dengan air dan daun pandan selama sekitar 45 menit.','Tambahkan gula merah dan garam, lalu aduk.','Masak hingga ketan empuk dan kuah mengental.','Sajikan hangat dengan santan.'],
+bakso:['Haluskan daging bersama bawang putih dan bumbu.','Uleni dengan tapioka dan sedikit es batu hingga kalis.','Bentuk bulat dan rebus dalam air mendidih sampai mengapung.','Rebus kaldu sapi, lalu tambahkan bakso di dalamnya.','Sajikan dengan mie, bihun, bawang goreng, dan sambal.'],
+sotoayam:['Rebus ayam dengan air, daun salam, dan serai hingga matang. Angkat lalu suwir.','Haluskan bawang, jahe, dan kunyit.','Tumis bumbu halus sampai harum, lalu masukkan ke kuah ayam.','Masak kuah 20 menit agar bumbu meresap.','Sajikan dengan bihun, suwiran ayam, telur, bawang goreng, dan seledri.'],
+rawon:['Rebus daging sapi hingga empuk. Sisihkan kaldunya.','Larutkan kluwek dengan sedikit air, lalu saring.','Haluskan bumbu dan tumis sampai harum bersama kluwek.','Masukkan bumbu dan daging ke dalam kaldu, lalu masak 30 menit.','Sajikan dengan tauge, sambal, dan telur asin.'],
+nasiuduk:['Cuci beras, lalu masukkan ke panci dengan santan, daun salam, serai, dan jahe.','Tambahkan garam dan masak dengan api kecil sampai nasi hampir matang.','Kukus nasi sebentar agar pulen dan wangi.','Goreng ayam dan buat telur dadar.','Sajikan dengan ayam, telur, emping, bawang goreng, dan sambal.'],
+nasikuning:['Haluskan kunyit, lalu campur dengan santan, garam, daun salam, dan serai.','Masak beras dengan campuran santan hingga santan terserap.','Kukus nasi hingga pulen dan wangi.','Goreng ikan teri dan buat telur dadar.','Sajikan dengan telur, abon, ikan teri, dan irisan timun.'],
+sateayam:['Potong ayam dan lumuri dengan bumbu yang sudah dihaluskan.','Campur dengan kecap manis dan diamkan 30 menit.','Tusuk ayam ke tusuk sate.','Panggang sambil diolesi minyak hingga matang dan kecokelatan.','Haluskan kacang, cabai, dan gula merah untuk bumbu kacang, lalu sajikan bersama sate.'],
+martabak:['Campur tepung dengan air dan garam sampai rata, lalu diamkan 30 menit.','Tumis daging giling dengan bawang dan bumbu sampai matang.','Tuang adonan tipis di wajan berminyak sampai pinggirnya renyah.','Beri telur, daging, dan daun bawang di atas adonan.','Lipat dan goreng sampai kecokelatan di kedua sisi.'],
+ketoprak:['Goreng tahu hingga kecokelatan dan potong dadu.','Rebus tauge sebentar agar tetap renyah.','Haluskan kacang, gula merah, cabai, dan garam. Encerkan dengan air.','Tata lontong, tahu, tauge, dan telur rebus di piring.','Siram bumbu kacang dan sajikan dengan kerupuk.'],
+rujakcingur:['Rebus cingur sapi hingga empuk, lalu iris tipis.','Goreng tahu dan tempe hingga kecokelatan, lalu potong.','Rebus tauge dan kangkung sebentar.','Haluskan kacang, cabai, gula merah, dan garam. Campur dengan petis dan air asam.','Tata sayur, buah, tahu, tempe, dan cingur di piring, lalu siram bumbu petis.'],
+seblak:['Tumis bawang putih dan cabai halus hingga harum.','Masukkan air dan kaldu bubuk, lalu didihkan.','Masukkan kerupuk basah dan masak hingga kerupuk lunak dan menyerap bumbu.','Tambahkan sosis dan telur, masak sebentar sampai telur matang.','Sajikan selagi panas.'],
+pecellele:['Bersihkan lele, lumuri dengan garam dan kunyit, lalu diamkan 15 menit.','Goreng lele dengan minyak panas hingga renyah dan kecokelatan.','Haluskan cabai, terasi, tomat, dan garam untuk sambal.','Goreng tahu atau tempe untuk pelengkap.','Sajikan lele dengan sambal terasi dan lalapan kol, timun, serta kemangi.'],
+siomay:['Uleni ikan dengan tapioka, telur, dan bumbu sampai kalis.','Bentuk adonan sesuai selera, lalu kukus sampai matang.','Rebus kentang, kol, dan telur, lalu potong sesuai ukuran.','Tata siomay bersama isian di piring.','Siram bumbu kacang kecap dan sajikan segera.']
+};
+
+let kat = 'Semua', q = '';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+const SKEY = 'dapur-nusantara-custom', CKEY = 'dapur-nusantara-settings';
+function loadJSON(k, def){ try{ const v = JSON.parse(localStorage.getItem(k)); return v ?? def; }catch(e){ return def; } }
+function putJSON(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+R.push(...loadJSON(SKEY, []));
+const DKEY = 'dapur-nusantara-done';
+let DONE = loadJSON(DKEY, []);
+
+let S = loadJSON(CKEY, {lang:'id', tema:'auto', colors:{}});
+let LANG = S.lang === 'en' ? 'en' : 'id';
+let curId = null;
+
+const TX = {
+  id:{nav_resep:'Resep',nav_dash:'Dashboard',nav_set:'Pengaturan',search:'Cari resep...',add:'+ Tambah Resep',all:'Semua',empty:'Tidak ada resep yang cocok.',menit:'menit',porsi:'porsi',bahan:'Bahan-bahan',cara:'Cara membuat',hapus:'Hapus resep ini',tutup:'Tutup',form_title:'Tambah resep baru',f_nama:'Nama makanan',f_daerah:'Daerah, misal Jawa Barat',f_kat:'Kategori, misal Lauk',f_waktu:'Waktu (menit)',f_porsi:'Porsi',f_bahan:'Satu bahan per baris',f_langkah:'Satu langkah per baris',simpan:'Simpan',isi:'Isi nama, kategori, bahan, dan langkah.',gagal:'Resep tampil, tapi tidak bisa disimpan permanen di browser ini.',d_kat:'Resep per kategori',d_dae:'Resep per daerah',d_tingkat:'Tingkat kesulitan',d_tbl:'Daftar resep (waktu terlama di atas)',s_total:'Total resep',s_avg:'Rata-rata waktu',s_dae:'Jumlah daerah',s_cepat:'Resep tercepat',th_nama:'Nama',th_kat:'Kategori',th_waktu:'Waktu (mnt)',th_porsi:'Porsi',th_tingkat:'Kesulitan',set_title:'Pengaturan',set_lang:'Bahasa',set_tema:'Tema',t_auto:'Ikuti sistem',t_light:'Terang',t_dark:'Gelap',t_forest:'Hijau',t_ocean:'Biru',t_custom:'Kustom',set_bg:'Warna latar',set_card:'Warna kartu',set_text:'Warna teks',set_accent:'Warna aksen',reset:'Atur ulang',dibuka:'Dibuka dengan',cari_di:'Cari resep lainnya di',nav_ai:'Asisten',nav_belajar:'Belajar',ai_title:'Asisten Resep',ai_desc:'Tulis bahan yang kamu punya, lalu lihat resep yang bisa dibuat.',ai_ph:'Contoh: telur, tempe, cabai, bawang merah',ai_btn:'Cari resep',ai_none:'Tidak ada resep yang cocok. Coba tambahkan bahan lain.',ai_match:'cocok',ai_of:'dari',ai_bahan:'bahan',d_check:'Checklist masakan',d_done:'sudah dimasak',d_of:'dari',ai_kurang:'Masih perlu:',pilih:'Pilih resep...',ai_belajar:'Belajar & Latihan',ai_belajar_desc:'Pilih resep, lalu pilih mode.',ai_mode:'/learn: lihat langkah satu per satu. /deepdive: ringkasan dan takaran untuk porsi lain.',dd_ringkas:'Ringkasan',dd_langkah:'langkah',dd_bahan:'bahan',dd_porsi:'Jumlah porsi',m_daerah:'Daerah',m_kat:'Kategori',m_waktu:'Waktu',m_porsi:'Porsi',m_tingkat:'Tingkat',l_nama:'Nama',l_daerah:'Daerah',l_kat:'Kategori',l_waktu:'Waktu (menit)',l_porsi:'Porsi',l_tingkat:'Tingkat',l_bahan:'Bahan (satu per baris)',l_langkah:'Langkah (satu per baris)',learn_step:'Langkah',learn_bahan:'Lihat bahan',prev:'← Sebelumnya',next:'Berikutnya →',q_bahan:'Mana yang termasuk bahan untuk',q_urut:'Langkah apa yang paling tepat setelah:',q_skor:'Skor kamu:',q_ulang:'Ulangi latihan',q_benar:'Benar!',q_salah:'Belum tepat.',q_jawaban:'Jawaban yang benar:',q_lanjut:'Lanjut',
+    kat:{Nasi:'Nasi',Lauk:'Lauk',Sayur:'Sayur',Camilan:'Camilan',Minuman:'Minuman',Sup:'Sup',Kue:'Kue',Mie:'Mie',Dessert:'Dessert'},
+    tk:{Mudah:'Mudah',Sedang:'Sedang',Sulit:'Sulit'}},
+  en:{nav_resep:'Recipes',nav_dash:'Dashboard',nav_set:'Settings',search:'Search recipes...',add:'+ Add Recipe',all:'All',empty:'No recipes match.',menit:'min',porsi:'servings',bahan:'Ingredients',cara:'Instructions',hapus:'Delete this recipe',tutup:'Close',form_title:'Add a new recipe',f_nama:'Dish name',f_daerah:'Region, e.g. West Java',f_kat:'Category, e.g. Main dish',f_waktu:'Time (minutes)',f_porsi:'Servings',f_bahan:'One ingredient per line',f_langkah:'One step per line',simpan:'Save',isi:'Please fill in name, category, ingredients, and steps.',gagal:'Recipe shown, but it could not be saved permanently in this browser.',d_kat:'Recipes per category',d_dae:'Recipes per region',d_tingkat:'Difficulty',d_tbl:'Recipe list (longest time first)',s_total:'Total recipes',s_avg:'Average time',s_dae:'Regions',s_cepat:'Fastest recipe',th_nama:'Name',th_kat:'Category',th_waktu:'Time (min)',th_porsi:'Servings',th_tingkat:'Difficulty',set_title:'Settings',set_lang:'Language',set_tema:'Theme',t_auto:'Follow system',t_light:'Light',t_dark:'Dark',t_forest:'Green',t_ocean:'Blue',t_custom:'Custom',set_bg:'Background color',set_card:'Card color',set_text:'Text color',set_accent:'Accent color',reset:'Reset',dibuka:'Opened with',cari_di:'Find more recipes on',nav_ai:'Assistant',nav_belajar:'Learn',ai_title:'Recipe Assistant',ai_desc:'Type the ingredients you have, and see which recipes you can make.',ai_ph:'Example: egg, tempeh, chili, shallot',ai_btn:'Find recipes',ai_none:'No recipes match. Try adding other ingredients.',ai_match:'match',ai_of:'of',ai_bahan:'ingredients',d_check:'Cooking checklist',d_done:'cooked',d_of:'of',ai_kurang:'Still needed:',pilih:'Choose a recipe...',ai_belajar:'Learn & Practice',ai_belajar_desc:'Choose a recipe, then pick a mode.',ai_mode:'/learn: go through the steps one by one. /deepdive: summary and amounts for other servings.',dd_ringkas:'Summary',dd_langkah:'steps',dd_bahan:'ingredients',dd_porsi:'Servings',m_daerah:'Region',m_kat:'Category',m_waktu:'Time',m_porsi:'Servings',m_tingkat:'Difficulty',l_nama:'Name',l_daerah:'Region',l_kat:'Category',l_waktu:'Time (minutes)',l_porsi:'Servings',l_tingkat:'Difficulty',l_bahan:'Ingredients (one per line)',l_langkah:'Steps (one per line)',learn_step:'Step',learn_bahan:'See ingredients',prev:'← Previous',next:'Next →',q_bahan:'Which one is an ingredient for',q_urut:'Which step comes right after:',q_skor:'Your score:',q_ulang:'Try again',q_benar:'Correct!',q_salah:'Not quite.',q_jawaban:'Correct answer:',q_lanjut:'Next',
+    kat:{Nasi:'Rice',Lauk:'Main dish',Sayur:'Vegetables',Camilan:'Snacks',Minuman:'Drinks',Sup:'Soup',Kue:'Cakes',Mie:'Noodles',Dessert:'Dessert'},
+    tk:{Mudah:'Easy',Sedang:'Medium',Sulit:'Hard'}}
+};
+const t = k => (TX[LANG][k] ?? TX.id[k] ?? k);
+const kt = k => (TX[LANG].kat[k] ?? k);
+const tk = k => (TX[LANG].tk[k] ?? k);
+
+const PRESETS = {
+  light:{bg:'#faf7f2',card:'#ffffff',text:'#2b2118',accent:'#c2410c'},
+  dark:{bg:'#1c1713',card:'#271f19',text:'#f3ebe1',accent:'#fb923c'},
+  forest:{bg:'#f1f7f0',card:'#ffffff',text:'#1d2b1f',accent:'#2f7d4f'},
+  ocean:{bg:'#eef6fb',card:'#ffffff',text:'#10263a',accent:'#0c6fb3'}
+};
+
+function applyTheme(){
+  const st = document.documentElement.style;
+  ['--bg','--card','--text','--accent','--soft','--line','--muted'].forEach(v => st.removeProperty(v));
+  if (S.tema === 'auto') return;
+  const c = S.tema === 'custom' ? {...PRESETS.light, ...S.colors} : PRESETS[S.tema];
+  st.setProperty('--bg', c.bg);
+  st.setProperty('--card', c.card);
+  st.setProperty('--text', c.text);
+  st.setProperty('--accent', c.accent);
+  st.setProperty('--soft', 'color-mix(in srgb, var(--accent) 15%, var(--card))');
+  st.setProperty('--line', 'color-mix(in srgb, var(--text) 18%, var(--card))');
+  st.setProperty('--muted', 'color-mix(in srgb, var(--text) 60%, var(--card))');
+}
+
+function syncInputs(){
+  const cs = getComputedStyle(document.documentElement);
+  $('#s-tema').value = S.tema;
+  $('#c-bg').value = cs.getPropertyValue('--bg').trim();
+  $('#c-card').value = cs.getPropertyValue('--card').trim();
+  $('#c-text').value = cs.getPropertyValue('--text').trim();
+  $('#c-accent').value = cs.getPropertyValue('--accent').trim();
+}
+
+function saveSettings(){ putJSON(CKEY, S); }
+function setLang(l){ LANG = l === 'en' ? 'en' : 'id'; S.lang = LANG; saveSettings(); applyLang(); }
+function setTema(x){ S.tema = x; saveSettings(); applyTheme(); syncInputs(); }
+function setColor(k, v){ S.tema = 'custom'; S.colors = {...S.colors, [k]: v}; saveSettings(); applyTheme(); syncInputs(); }
+function resetSet(){ S = {lang: LANG, tema:'auto', colors:{}}; saveSettings(); applyTheme(); syncInputs(); }
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = t(e.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(e => e.placeholder = t(e.dataset.i18nPh));
+  document.querySelectorAll('#f-tingkat option').forEach(o => o.textContent = tk(o.value));
+  $('#s-lang').value = LANG;
+  renderChips(); renderList();
+  if (!$('#v-dash').classList.contains('hidden')) { renderDash(); renderChecklist(); }
+  if (curId) openR(curId, true);
+}
+
+function renderChips(){
+  const kats = ['Semua', ...new Set(R.map(r => r.kategori))];
+  $('#chips').innerHTML = kats.map(k =>
+    `<button class="chip${k===kat?' on':''}" data-k="${esc(k)}" onclick="setKat(this.dataset.k)">${k==='Semua'?t('all'):esc(kt(k))}</button>`).join('');
+}
+function setKat(k){ kat = k; renderChips(); renderList(); }
+
+function renderList(){
+  const list = R.filter(r => (kat==='Semua' || r.kategori===kat) && (r.nama+' '+r.daerah).toLowerCase().includes(q));
+  $('#grid').innerHTML = list.length
+    ? list.map(r => `<article class="card" role="button" tabindex="0" onclick="openR('${r.id}')" onkeydown="if(event.key==='Enter')openR('${r.id}')">
+        <span class="tag">${esc(kt(r.kategori))}</span>
+        <h3>${esc(r.nama)}</h3>
+        <p class="muted">${esc(r.daerah)}</p>
+        <p class="muted">${r.waktu} ${t('menit')} · ${r.porsi} ${t('porsi')} · ${esc(tk(r.tingkat))}</p>
+      </article>`).join('')
+    : `<p class="muted">${t('empty')}</p>`;
+}
+
+function openR(id, quiet){
+  const r = R.find(x => x.id === id);
+  if (!r) return;
+  curId = id;
+  const d = $('#detail');
+  d.innerHTML = `<button class="close" onclick="closeR()" aria-label="${t('tutup')}">×</button>
+    <h2>${esc(r.nama)}</h2>
+    <div class="meta">
+      <div><span class="muted">${t('m_daerah')}</span><b>${esc(r.daerah)}</b></div>
+      <div><span class="muted">${t('m_kat')}</span><b>${esc(kt(r.kategori))}</b></div>
+      <div><span class="muted">${t('m_waktu')}</span><b>${r.waktu} ${t('menit')}</b></div>
+      <div><span class="muted">${t('m_porsi')}</span><b>${r.porsi} ${t('porsi')}</b></div>
+      <div><span class="muted">${t('m_tingkat')}</span><b>${esc(tk(r.tingkat))}</b></div>
+    </div>
+    <h3>${t('bahan')}</h3>
+    <ul>${r.bahan.map(b => `<li>${esc(b)}</li>`).join('')}</ul>
+    <h3>${t('cara')}</h3>
+    <ol>${(LANGKAH[r.id]||r.langkah).map(l => `<li>${esc(l)}</li>`).join('')}</ol>
+    <button class="chip" onclick="deepdive('${r.id}')">/deepdive</button>
+    <div id="deep"></div>
+    ${r.custom ? `<button class="chip" onclick="hapusResep('${r.id}')">${t('hapus')}</button>` : ''}`;
+  d.classList.remove('hidden');
+  if (!quiet) d.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function closeR(){ $('#detail').classList.add('hidden'); curId = null; }
+
+function toggleForm(){ $('#form').classList.toggle('hidden'); }
+
+function simpanResep(){
+  const v = id => $('#'+id).value.trim();
+  const nama = v('f-nama'), kategori = v('f-kat');
+  const bahan = v('f-bahan').split('\n').map(s => s.trim()).filter(Boolean);
+  const langkah = v('f-langkah').split('\n').map(s => s.trim()).filter(Boolean);
+  if (!nama || !kategori || !bahan.length || !langkah.length) { $('#f-msg').textContent = t('isi'); return; }
+  const baru = {id:'c'+Date.now(), nama, daerah:v('f-daerah')||'Lainnya', kategori, waktu:+v('f-waktu')||0, porsi:+v('f-porsi')||1, tingkat:v('f-tingkat'), bahan, langkah, custom:true};
+  R.push(baru);
+  const ok = putJSON(SKEY, [...loadJSON(SKEY, []), baru]);
+  ['f-nama','f-daerah','f-kat','f-waktu','f-porsi','f-bahan','f-langkah'].forEach(i => $('#'+i).value = '');
+  toggleForm();
+  renderChips(); renderList();
+  if (!ok) alert(t('gagal'));
+  openR(baru.id);
+}
+
+function hapusResep(id){
+  const i = R.findIndex(x => x.id === id);
+  if (i > -1) R.splice(i, 1);
+  putJSON(SKEY, loadJSON(SKEY, []).filter(x => x.id !== id));
+  if (curId === id) curId = null;
+  renderChips(); renderList(); closeR();
+}
+
+function renderDash(){
+  const n = R.length;
+  const avg = Math.round(R.reduce((a,r) => a + r.waktu, 0) / n);
+  const dae = new Set(R.map(r => r.daerah).filter(d => d !== 'Nasional' && d !== 'Lainnya')).size;
+  $('#stats').innerHTML = [[t('s_total'), n], [t('s_avg'), avg + ' ' + t('menit')], [t('s_dae'), dae]]
+    .map(([l,v]) => `<div class="stat"><div class="muted">${l}</div><div class="big">${esc(v)}</div></div>`).join('');
+
+  const cat = {}, tingkat = {};
+  R.forEach(r => {
+    cat[r.kategori] = (cat[r.kategori]||0) + 1;
+    tingkat[r.tingkat] = (tingkat[r.tingkat]||0) + 1;
+  });
+  const max = Math.max(...Object.values(cat));
+  $('#bars').innerHTML = Object.entries(cat).sort((a,b) => b[1]-a[1]).map(([k,v]) =>
+    `<div class="bar-row"><span>${esc(kt(k))}</span><div class="bar-track"><div class="bar" style="width:${v/max*100}%"></div></div><b>${v}</b></div>`).join('');
+  $('#tingkat').innerHTML = Object.entries(tingkat).map(([k,v]) =>
+    `<span class="pill">${esc(tk(k))}: ${v}</span>`).join('');
+}
+
+function toggleDone(id, on){
+  DONE = on ? [...new Set([...DONE, id])] : DONE.filter(x => x !== id);
+  putJSON(DKEY, DONE);
+  renderChecklist();
+}
+
+function renderChecklist(){
+  const jumlah = R.filter(r => DONE.includes(r.id)).length;
+  $('#prog').textContent = `${jumlah} ${t('d_of')} ${R.length} ${t('d_done')}`;
+  $('#progbar').style.width = (R.length ? jumlah / R.length * 100 : 0) + '%';
+  $('#checklist').innerHTML = [...R].sort((a,b) => a.nama.localeCompare(b.nama)).map(r => {
+    const on = DONE.includes(r.id);
+    return `<label class="${on ? 'done' : ''}"><input type="checkbox" ${on ? 'checked' : ''} onchange="toggleDone('${r.id}', this.checked)"> ${esc(r.nama)}</label>`;
+  }).join('');
+}
+
+function renderRecipeSelect(){
+  const sel = $('#ai-recipe'); const cur = sel.value;
+  sel.innerHTML = `<option value="">${t('pilih')}</option>` +
+    [...R].sort((a,b) => a.nama.localeCompare(b.nama)).map(r => `<option value="${r.id}">${esc(r.nama)}</option>`).join('');
+  sel.value = cur;
+}
+
+let LESSON = {id:null, i:0};
+function mulaiBelajar(){
+  const r = R.find(x => x.id === $('#ai-recipe').value);
+  if (!r) return;
+  LESSON = {id: r.id, i: 0};
+  tampilBelajar();
+}
+function geserBelajar(d){
+  const langkah = LANGKAH[LESSON.id] || R.find(x => x.id === LESSON.id).langkah;
+  LESSON.i = Math.max(0, Math.min(langkah.length - 1, LESSON.i + d));
+  tampilBelajar();
+}
+function tampilBelajar(){
+  const r = R.find(x => x.id === LESSON.id);
+  const langkah = LANGKAH[r.id] || r.langkah;
+  const i = LESSON.i;
+  $('#ai-out2').innerHTML = `<div class="card">
+    <p class="muted">${esc(r.nama)} · ${t('learn_step')} ${i+1} ${t('d_of')} ${langkah.length}</p>
+    <h3>${esc(langkah[i])}</h3>
+    <div class="toolbar">
+      <button class="chip" onclick="geserBelajar(-1)" ${i === 0 ? 'disabled' : ''}>${t('prev')}</button>
+      <button class="chip on" onclick="geserBelajar(1)" ${i === langkah.length - 1 ? 'disabled' : ''}>${t('next')}</button>
+    </div>
+    <details><summary>${t('learn_bahan')}</summary><ul>${r.bahan.map(b => `<li>${esc(b)}</li>`).join('')}</ul></details>
+  </div>`;
+}
+
+function scaleLine(b, f){
+  const m = b.match(/^(\d+\/\d+|\d+(?:[.,]\d+)?)(.*)$/);
+  if (!m || f === 1) return b;
+  if (/\bcm\b|secukupnya/i.test(b)) return b;
+  if (/garam|merica|kaldu|gula|kecap|terasi|asam|micin/i.test(b)) return b + ' (cicip dan sesuaikan)';
+  let n;
+  if (m[1].includes('/')) { const [x, y] = m[1].split('/'); n = x / y; }
+  else n = parseFloat(m[1].replace(',', '.'));
+  return (n * f).toLocaleString(LANG === 'en' ? 'en-US' : 'id-ID', {maximumFractionDigits: 2}) + m[2];
+}
+
+function renderDeep(where, r, porsi){
+  const target = porsi || r.porsi;
+  const f = target / r.porsi;
+  const langkah = LANGKAH[r.id] || r.langkah;
+  $('#' + where).innerHTML = `<div class="panel" style="margin-top:12px">
+    <h3>${t('dd_ringkas')}</h3>
+    <p class="muted">${esc(r.daerah)} · ${esc(kt(r.kategori))} · ${esc(tk(r.tingkat))} · ${r.waktu} ${t('menit')} · ${langkah.length} ${t('dd_langkah')} · ${r.bahan.length} ${t('dd_bahan')}</p>
+    <label class="row"><span>${t('dd_porsi')}</span><input type="number" min="1" value="${target}" style="width:90px" onchange="renderDeep('${where}', R.find(x => x.id === '${r.id}'), +this.value || 1)"></label>
+    <ul>${r.bahan.map(b => `<li>${esc(scaleLine(b, f))}</li>`).join('')}</ul>
+  </div>`;
+}
+function deepdive(id){ renderDeep('deep', R.find(x => x.id === id)); }
+function mulaiDeep(){
+  const r = R.find(x => x.id === $('#ai-recipe').value);
+  if (r) renderDeep('ai-out2', r);
+}
+
+function tab(w){
+  ['resep','ai','belajar','dash','set'].forEach(x => $('#v-'+x).classList.toggle('hidden', x !== w));
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.t === w));
+  if (w === 'dash') { renderDash(); renderChecklist(); }
+  if (w === 'belajar') renderRecipeSelect();
+}
+
+function kataAsisten(){ return $('#ai-in').value.toLowerCase().split(/[,\n]| dan /).map(s => s.trim()).filter(Boolean); }
+function tambahBahan(b){ const daftar = kataAsisten(); if (!daftar.includes(b)) daftar.push(b); $('#ai-in').value = daftar.join(', '); cariResep(); }
+function cariResep(){
+  const input = kataAsisten();
+  const out = $('#ai-out');
+  if (!input.length) { out.innerHTML = ''; return; }
+  const hasil = R.map(r => {
+    const ada = r.bahan.map(b => input.some(k => b.toLowerCase().includes(k)));
+    const cocok = ada.filter(Boolean).length;
+    const kurang = r.bahan.filter((b, i) => !ada[i]).slice(0, 3);
+    return {r, cocok, pct: Math.round(cocok / r.bahan.length * 100), kurang};
+  }).filter(x => x.cocok > 0).sort((a, b) => b.pct - a.pct || a.r.waktu - b.r.waktu);
+  out.innerHTML = hasil.length
+    ? hasil.map(({r, cocok, pct, kurang}) => `<div class="card" style="margin-bottom:10px" role="button" tabindex="0" onclick="bukaDariAsisten('${r.id}')" onkeydown="if(event.key==='Enter')bukaDariAsisten('${r.id}')">
+        <h3>${esc(r.nama)} <span class="tag">${pct}%</span></h3>
+        <p class="muted">${cocok} ${t('ai_of')} ${r.bahan.length} ${t('ai_bahan')} ${t('ai_match')} · ${r.waktu} ${t('menit')}</p>
+        ${kurang.length ? `<p class="muted">${t('ai_kurang')} ${kurang.map(k => esc(k)).join(', ')}</p>` : ''}
+      </div>`).join('')
+    : `<p class="muted">${t('ai_none')}</p>`;
+}
+function bukaDariAsisten(id){ tab('resep'); openR(id); }
+
+applyTheme();
+applyLang();
+syncInputs();
+</script>
+</body>
+</html>
